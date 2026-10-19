@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axUnavailableModal"
+          data-ax-unavailable="Enregistrer un paiement" data-ax-unavailable-detail="L'enregistrement de paiements nécessite le modèle Paiement, qui n'existe pas encore dans le backend.">
+    <i class="bi bi-plus-lg" aria-hidden="true"></i>Enregistrer un paiement
+  </button>
+{% endblock %}
+
+{% block content %}
+  {% if summary %}
+  <div class="row g-3 mb-4">
+    {% for s in summary %}<div class="col-6 col-xl-3">{% include "components/stat_card.html" with label=s.label value=s.value money=s.money icon=s.icon tone=s.tone compact=True only %}</div>{% endfor %}
+  </div>
+  {% endif %}
+
+  <section class="ax-table-card" data-ax-table aria-label="Liste des paiements">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="paiementSearch" search_label="Rechercher un paiement, un client ou un contrat" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Liste des paiements</caption>
+        <thead><tr>
+          <th scope="col">Référence</th><th scope="col">Client</th><th scope="col">Contrat</th>
+          <th scope="col">Date</th><th scope="col">Mode</th><th scope="col" class="is-num">Montant</th><th scope="col">Statut</th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{{ r.status }}">
+            <td class="is-ref">{{ r.ref }}</td>
+            <td><span class="ax-cell-person"><span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ r.client|ax_initials }}</span><span class="ax-table__primary">{{ r.client }}</span></span></td>
+            <td class="is-ref">{{ r.contract }}</td>
+            <td class="ax-num">{{ r.date|date:"d/m/Y" }}</td>
+            <td>{{ r.method }}</td>
+            <td class="is-num">{{ r.amount|ax_money }}</td>
+            <td>{% include "components/status_badge.html" with status=r.status %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucun paiement ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre de statut.</p>
+    </div>
+    <div class="ax-table-footer"><span>Pagination à brancher avec les vraies données</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-credit-card-2-front" title="Aucun paiement pour le moment" text="Les primes encaissées, à venir et en retard apparaîtront ici." action_label="Enregistrer un paiement" action_detail="Le modèle Paiement n'existe pas encore dans le backend." %}
+    {% endif %}
+  </section>
+{% endblock %}

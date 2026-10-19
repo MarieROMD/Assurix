@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axUnavailableModal"
+          data-ax-unavailable="Nouvelle demande" data-ax-unavailable-detail="La création de demandes nécessite le modèle Demande, qui n'existe pas encore dans le backend.">
+    <i class="bi bi-plus-lg" aria-hidden="true"></i>Nouvelle demande
+  </button>
+{% endblock %}
+
+{% block content %}
+  {% if summary %}
+  <div class="row g-3 mb-4">
+    {% for s in summary %}<div class="col-6 col-xl-3">{% include "components/stat_card.html" with label=s.label value=s.value icon=s.icon tone=s.tone compact=True only %}</div>{% endfor %}
+  </div>
+  {% endif %}
+
+  <section class="ax-table-card" data-ax-table aria-label="Suivi des demandes">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="demandeSearch" search_label="Rechercher une demande ou un client" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Suivi des demandes</caption>
+        <thead><tr>
+          <th scope="col">Référence</th><th scope="col">Client</th><th scope="col">Type de demande</th>
+          <th scope="col">Reçue le</th><th scope="col">Priorité</th><th scope="col">Statut</th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{{ r.status }}">
+            <td class="is-ref">{{ r.ref }}</td>
+            <td><span class="ax-cell-person"><span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ r.client|ax_initials }}</span><span class="ax-table__primary">{{ r.client }}</span></span></td>
+            <td>{{ r.kind }}</td>
+            <td class="ax-num">{{ r.date|date:"d/m/Y" }}</td>
+            <td><span class="ax-priority ax-priority--{{ r.priority|lower }}"><i aria-hidden="true"></i>{{ r.priority }}</span></td>
+            <td>{% include "components/status_badge.html" with status=r.status %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucune demande ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre de statut.</p>
+    </div>
+    <div class="ax-table-footer"><span>Pagination à brancher avec les vraies données</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-inbox" title="Aucune demande pour le moment" text="Les demandes de vos clients apparaîtront ici avec leur type, leur date et leur statut." action_label="Nouvelle demande" action_detail="Le modèle Demande n'existe pas encore dans le backend." %}
+    {% endif %}
+  </section>
+{% endblock %}

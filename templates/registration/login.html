@@ -1,0 +1,148 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0A1730">
+  <title>Connexion · Assurix</title>
+  <link rel="icon" href="{% static 'img/assurix-mark.svg' %}" type="image/svg+xml">
+
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-design-system.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-auth.css' %}">
+  <script src="{% static 'js/assurix-theme.js' %}"></script>
+</head>
+<body>
+<div class="ax-auth">
+
+  {# ---------- Panneau de marque ---------- #}
+  <aside class="ax-auth__brand" aria-label="Présentation d'Assurix">
+    <div class="ax-auth__brand-top">
+      <img src="{% static 'img/assurix-logo-light.svg' %}" alt="Assurix" width="148" height="40">
+    </div>
+
+    <div class="ax-auth__pitch">
+      <h2>Gérez vos assurés, contrats et sinistres au même endroit.</h2>
+      <p>Une plateforme pensée pour les équipes d'assurance : claire, sécurisée et précise.</p>
+
+      {# Illustration : bouclier protégeant un contrat, entouré d'arcs #}
+      <svg class="ax-auth__visual" viewBox="0 0 420 260" fill="none" role="img" aria-label="Illustration d'un bouclier protégeant un contrat">
+        <g stroke="#2DD4BF" stroke-opacity="0.22" stroke-width="1">
+          <circle cx="300" cy="130" r="64"/><circle cx="300" cy="130" r="96"/><circle cx="300" cy="130" r="128"/>
+        </g>
+        <rect x="24" y="52" width="176" height="148" rx="16" fill="#0F2142" stroke="#243F6E"/>
+        <rect x="44" y="76" width="84" height="8" rx="4" fill="#243F6E"/>
+        <rect x="44" y="96" width="132" height="6" rx="3" fill="#172E57"/>
+        <rect x="44" y="112" width="116" height="6" rx="3" fill="#172E57"/>
+        <rect x="44" y="128" width="124" height="6" rx="3" fill="#172E57"/>
+        <rect x="44" y="160" width="64" height="22" rx="11" fill="#2DD4BF" fill-opacity="0.16"/>
+        <circle cx="58" cy="171" r="3.5" fill="#2DD4BF"/>
+        <rect x="68" y="168" width="30" height="6" rx="3" fill="#2DD4BF" fill-opacity="0.7"/>
+        <path d="M300 54 L362 78 V128 C362 168 336 194 300 208 C264 194 238 168 238 128 V78 Z" fill="#14284F" stroke="#2DD4BF" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M274 160 V132 a26 26 0 0 1 52 0 V160" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M274 146 h52" stroke="#2DD4BF" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <ul class="ax-auth__points">
+      <li><i class="bi bi-shield-lock" aria-hidden="true"></i>Accès protégé par l'authentification de votre organisation</li>
+      <li><i class="bi bi-diagram-3" aria-hidden="true"></i>Neuf modules métier clairement séparés</li>
+      <li><i class="bi bi-moon-stars" aria-hidden="true"></i>Thèmes clair et sombre</li>
+    </ul>
+  </aside>
+
+  {# ---------- Formulaire ---------- #}
+  <main class="ax-auth__panel" id="main">
+    <button type="button" class="ax-icon-btn ax-auth__theme ax-theme-toggle" data-ax-theme-toggle aria-pressed="false" aria-label="Passer au thème sombre"
+            style="display:inline-grid;place-items:center;width:2.5rem;height:2.5rem;border:1px solid var(--ax-border);border-radius:var(--ax-radius-md);background:var(--ax-surface);color:var(--ax-text-2);cursor:pointer">
+      <i class="bi bi-sun ax-theme-toggle__sun" aria-hidden="true"></i>
+      <i class="bi bi-moon-stars ax-theme-toggle__moon" aria-hidden="true"></i>
+    </button>
+
+    <div class="ax-auth__card">
+      <div class="ax-auth__logo-mobile">
+        <img class="ax-logo--for-light" src="{% static 'img/assurix-logo.svg' %}" alt="Assurix" width="148" height="40">
+        <img class="ax-logo--for-dark" src="{% static 'img/assurix-logo-light.svg' %}" alt="Assurix" width="148" height="40">
+      </div>
+
+      <h1 class="ax-title">Connexion</h1>
+      <p class="ax-lead">Saisissez vos identifiants pour accéder à votre espace.</p>
+
+      <form method="post" action="{% url 'login' %}" novalidate class="ax-stack" style="gap: var(--ax-space-5)">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="ax-alert ax-alert--danger" role="alert">
+          <i class="bi bi-x-octagon ax-alert__icon" aria-hidden="true"></i>
+          <div class="ax-alert__body">
+            <p class="ax-alert__title">Connexion impossible</p>
+            {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <div class="ax-alert" role="status">
+          <i class="bi bi-info-circle ax-alert__icon" aria-hidden="true"></i>
+          <div class="ax-alert__body"><p>Vous êtes déjà connecté en tant que {{ user.get_username }}. <a href="{% url 'dashboard' %}">Aller au tableau de bord</a></p></div>
+        </div>
+        {% endif %}
+
+        <div class="ax-field">
+          <label class="ax-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+          <div class="ax-input-group">
+            <i class="bi bi-person ax-input-group__icon" aria-hidden="true"></i>
+            <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+                   value="{{ form.username.value|default_if_none:'' }}"
+                   class="ax-input{% if form.username.errors %} is-invalid{% endif %}"
+                   autocomplete="username" autocapitalize="none" spellcheck="false" autofocus required
+                   {% if form.username.errors %}aria-invalid="true" aria-describedby="usernameError"{% endif %}>
+          </div>
+          {% if form.username.errors %}<p class="ax-error" id="usernameError"><i class="bi bi-exclamation-circle" aria-hidden="true"></i>{{ form.username.errors|join:" " }}</p>{% endif %}
+        </div>
+
+        <div class="ax-field">
+          <label class="ax-label" for="{{ form.password.id_for_label }}">Mot de passe</label>
+          <div class="ax-input-group ax-input-group--trailing">
+            <i class="bi bi-lock ax-input-group__icon" aria-hidden="true"></i>
+            <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
+                   class="ax-input{% if form.password.errors %} is-invalid{% endif %}" autocomplete="current-password" required
+                   {% if form.password.errors %}aria-invalid="true" aria-describedby="passwordError"{% endif %}>
+            <button type="button" class="ax-input-group__action" data-ax-toggle-password aria-controls="{{ form.password.id_for_label }}" aria-label="Afficher le mot de passe">
+              <i class="bi bi-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          {% if form.password.errors %}<p class="ax-error" id="passwordError"><i class="bi bi-exclamation-circle" aria-hidden="true"></i>{{ form.password.errors|join:" " }}</p>{% endif %}
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="ax-btn ax-btn--primary ax-btn--lg ax-btn--block">Se connecter</button>
+      </form>
+
+      <p class="ax-auth__foot">Accès réservé aux utilisateurs autorisés. En cas de difficulté, contactez votre administrateur.</p>
+    </div>
+
+    <p class="ax-auth__copy">© {% now "Y" %} Assurix</p>
+  </main>
+</div>
+
+<script>
+  /* Afficher / masquer le mot de passe (aucune authentification n'est simulée côté client) */
+  (function () {
+    var btn = document.querySelector("[data-ax-toggle-password]");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var input = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!input) return;
+      var show = input.type === "password";
+      input.type = show ? "text" : "password";
+      btn.setAttribute("aria-label", show ? "Masquer le mot de passe" : "Afficher le mot de passe");
+      btn.querySelector("i").className = show ? "bi bi-eye-slash" : "bi bi-eye";
+    });
+  })();
+</script>
+</body>
+</html>

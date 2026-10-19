@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axClientFormModal">
+    <i class="bi bi-person-plus" aria-hidden="true"></i>Nouveau client
+  </button>
+{% endblock %}
+
+{% block content %}
+  {% if summary %}
+  <div class="row g-3 mb-4">
+    {% for s in summary %}<div class="col-6 col-xl-3">{% include "components/stat_card.html" with label=s.label value=s.value icon=s.icon tone=s.tone compact=True only %}</div>{% endfor %}
+  </div>
+  {% endif %}
+
+  <section class="ax-table-card" data-ax-table aria-label="Liste des clients">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="clientSearch" search_label="Rechercher un client, une ville ou un e-mail" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Liste des clients</caption>
+        <thead><tr>
+          <th scope="col">Client</th><th scope="col">Type</th><th scope="col">Ville</th>
+          <th scope="col" class="is-num">Contrats</th><th scope="col">Client depuis</th><th scope="col">Statut</th>
+          <th scope="col"><span class="ax-sr-only">Actions</span></th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{{ r.status }}">
+            <td>
+              <button type="button" class="ax-row-link" data-bs-toggle="offcanvas" data-bs-target="#axClientPanel" aria-controls="axClientPanel"
+                      data-name="{{ r.name }}" data-ref="{{ r.ref }}" data-kind="{{ r.kind }}" data-city="{{ r.city }}" data-email="{{ r.email }}"
+                      data-phone="{{ r.phone }}" data-status="{{ r.status }}" data-tone="{{ r.status|ax_tone }}" data-contracts="{{ r.contracts }}"
+                      data-since="{{ r.since|date:'d/m/Y' }}" data-initials="{{ r.name|ax_initials }}">
+                <span class="ax-cell-person">
+                  <span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ r.name|ax_initials }}</span>
+                  <span><span class="ax-table__primary">{{ r.name }}</span><span class="ax-table__secondary">{{ r.ref }} · {{ r.email }}</span></span>
+                </span>
+              </button>
+            </td>
+            <td>{{ r.kind }}</td><td>{{ r.city }}</td>
+            <td class="is-num">{{ r.contracts }}</td>
+            <td class="ax-num">{{ r.since|date:"d/m/Y" }}</td>
+            <td>{% include "components/status_badge.html" with status=r.status %}</td>
+            <td class="is-actions">
+              <button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" data-bs-toggle="offcanvas" data-bs-target="#axClientPanel" aria-controls="axClientPanel"
+                      aria-label="Voir la fiche de {{ r.name }}"
+                      data-name="{{ r.name }}" data-ref="{{ r.ref }}" data-kind="{{ r.kind }}" data-city="{{ r.city }}" data-email="{{ r.email }}"
+                      data-phone="{{ r.phone }}" data-status="{{ r.status }}" data-tone="{{ r.status|ax_tone }}" data-contracts="{{ r.contracts }}"
+                      data-since="{{ r.since|date:'d/m/Y' }}" data-initials="{{ r.name|ax_initials }}"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucun client ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre de statut.</p>
+    </div>
+    <div class="ax-table-footer"><span>Pagination à brancher avec les vraies données</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-people" title="Aucun client pour le moment" text="Les fiches clients apparaîtront ici dès que le module sera connecté au backend." action_label="Nouveau client" action_detail="Le modèle Client n'existe pas encore dans le backend." %}
+    {% endif %}
+  </section>
+{% endblock %}
+
+{% block modals %}
+  {# Fiche client (rendue à partir de la ligne sélectionnée, lecture seule) #}
+  <div class="offcanvas offcanvas-end ax-offcanvas" tabindex="-1" id="axClientPanel" aria-labelledby="axClientPanelTitle">
+    <div class="offcanvas-header">
+      <h2 class="ax-h4" id="axClientPanelTitle">Fiche client</h2>
+      <button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" data-bs-dismiss="offcanvas" aria-label="Fermer"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+    </div>
+    <div class="offcanvas-body ax-stack">
+      <div class="ax-row" style="gap: var(--ax-space-4); flex-wrap: nowrap">
+        <span class="ax-avatar ax-avatar--lg" data-ax-client="initials" aria-hidden="true"></span>
+        <div style="min-width:0">
+          <p class="ax-h3 mb-1" data-ax-client="name"></p>
+          <span class="ax-badge" data-ax-client="status"></span>
+        </div>
+      </div>
+      <dl class="ax-dl">
+        <div><dt>Référence</dt><dd class="ax-mono" data-ax-client="ref"></dd></div>
+        <div><dt>Type de client</dt><dd data-ax-client="kind"></dd></div>
+        <div><dt>E-mail</dt><dd data-ax-client="email"></dd></div>
+        <div><dt>Téléphone</dt><dd data-ax-client="phone"></dd></div>
+        <div><dt>Ville</dt><dd data-ax-client="city"></dd></div>
+        <div><dt>Contrats</dt><dd data-ax-client="contracts"></dd></div>
+        <div><dt>Client depuis</dt><dd data-ax-client="since"></dd></div>
+      </dl>
+      <div class="ax-btn-group">
+        <button type="button" class="ax-btn" data-bs-toggle="modal" data-bs-target="#axUnavailableModal" data-ax-unavailable="Modifier la fiche" data-ax-unavailable-detail="La modification de clients nécessite le modèle Client, qui n'existe pas encore.">
+          <i class="bi bi-pencil" aria-hidden="true"></i>Modifier la fiche</button>
+        <button type="button" class="ax-btn ax-btn--danger" data-bs-toggle="modal" data-bs-target="#axUnavailableModal" data-ax-unavailable="Supprimer le client" data-ax-unavailable-detail="La suppression de clients nécessite le modèle Client, qui n'existe pas encore.">
+          <i class="bi bi-trash3" aria-hidden="true"></i>Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  {# Formulaire de création : disposition prête, enregistrement volontairement désactivé #}
+  <div class="modal fade ax-modal" id="axClientFormModal" tabindex="-1" aria-labelledby="axClientFormTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="axClientFormTitle">Nouveau client</h2>
+          <button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" data-bs-dismiss="modal" aria-label="Fermer"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="ax-alert ax-alert--warning mb-4" role="note">
+            <i class="bi bi-tools ax-alert__icon" aria-hidden="true"></i>
+            <div class="ax-alert__body"><p class="ax-alert__title">Enregistrement indisponible</p><p>Le modèle Client n'existe pas encore : ce formulaire montre la disposition prévue et ne sauvegarde rien.</p></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-12 ax-field"><label class="ax-label" for="cf-name">Nom complet ou raison sociale<span class="ax-required" aria-hidden="true">*</span></label><input id="cf-name" class="ax-input" type="text" autocomplete="off"></div>
+            <div class="col-12 col-sm-6 ax-field"><label class="ax-label" for="cf-kind">Type de client</label><select id="cf-kind" class="ax-select"><option>Particulier</option><option>Entreprise</option></select></div>
+            <div class="col-12 col-sm-6 ax-field"><label class="ax-label" for="cf-city">Ville</label><input id="cf-city" class="ax-input" type="text" autocomplete="off"></div>
+            <div class="col-12 col-sm-6 ax-field"><label class="ax-label" for="cf-email">Adresse e-mail<span class="ax-optional">(facultatif)</span></label><input id="cf-email" class="ax-input" type="email" autocomplete="off"></div>
+            <div class="col-12 col-sm-6 ax-field"><label class="ax-label" for="cf-phone">Téléphone</label><input id="cf-phone" class="ax-input" type="tel" autocomplete="off"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="ax-btn ax-btn--ghost" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="ax-btn ax-btn--primary" disabled aria-disabled="true">Enregistrer le client</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

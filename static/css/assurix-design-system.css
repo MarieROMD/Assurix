@@ -1,0 +1,368 @@
+/* ==========================================================================
+   ASSURIX DESIGN SYSTEM  ·  assurix-design-system.css
+   Tokens, fonts, light/dark themes, base typography.
+   Load order: bootstrap.min.css -> bootstrap-icons -> THIS FILE -> components -> layout -> responsive
+   Components only use the semantic tokens (--ax-*), never raw hex values,
+   so the dark theme works by redefining tokens under [data-bs-theme="dark"].
+   ========================================================================== */
+
+/* ---------- Fonts (self-hosted, variable) -------------------------------- */
+@font-face {
+  font-family: "Figtree";
+  src: url("../fonts/figtree-latin-wght-normal.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- 1. Raw palette (do not use directly in components) ----------- */
+:root {
+  /* Midnight navy */
+  --ax-navy-950: #060e1f;
+  --ax-navy-900: #0a1730;
+  --ax-navy-800: #0f2142;
+  --ax-navy-700: #172e57;
+  --ax-navy-600: #243f6e;
+  --ax-navy-300: #8fa3c7;
+  --ax-navy-100: #dde5f2;
+
+  /* Teal / emerald (brand) */
+  --ax-teal-50:  #eefaf8;
+  --ax-teal-100: #d3f2ed;
+  --ax-teal-300: #5fdccb;
+  --ax-teal-400: #2dd4bf;
+  --ax-teal-500: #14b8a6;
+  --ax-teal-600: #0a7f72;
+  --ax-teal-700: #086a60;
+  --ax-teal-800: #07544c;
+
+  /* Blue highlight */
+  --ax-blue-50:  #f1f6ff;
+  --ax-blue-100: #e1ebfe;
+  --ax-blue-300: #8db0f6;
+  --ax-blue-500: #3b78ee;
+  --ax-blue-600: #2358c4;
+
+  /* Cool neutrals (navy-tinted) */
+  --ax-gray-0:   #ffffff;
+  --ax-gray-25:  #fafbfc;
+  --ax-gray-50:  #f5f7fa;
+  --ax-gray-100: #eceff4;
+  --ax-gray-200: #e1e6ee;
+  --ax-gray-300: #cdd5e2;
+  --ax-gray-500: #6b7894;
+  --ax-gray-600: #4a5776;
+  --ax-gray-900: #0e1a33;
+}
+
+/* ---------- 2. Semantic tokens: LIGHT (default) -------------------------- */
+:root,
+[data-bs-theme="light"] {
+  color-scheme: light;
+
+  /* Surfaces */
+  --ax-bg:             var(--ax-gray-50);
+  --ax-surface:        var(--ax-gray-0);
+  --ax-surface-2:      var(--ax-gray-25);   /* table hover, input addon */
+  --ax-surface-sunken: var(--ax-gray-100);  /* segmented control track */
+  --ax-overlay:        rgb(6 14 31 / 0.55);
+
+  /* Lines */
+  --ax-border:         var(--ax-gray-200);
+  --ax-border-strong:  var(--ax-gray-300);
+
+  /* Text */
+  --ax-text:           var(--ax-gray-900);
+  --ax-text-2:         var(--ax-gray-600);
+  --ax-text-3:         var(--ax-gray-500);
+  --ax-text-inverse:   #ffffff;
+
+  /* Brand */
+  --ax-primary:          var(--ax-teal-600);
+  --ax-primary-hover:    var(--ax-teal-700);
+  --ax-primary-active:   var(--ax-teal-800);
+  --ax-primary-contrast: #ffffff;
+  --ax-primary-soft:     var(--ax-teal-50);
+  --ax-primary-soft-2:   var(--ax-teal-100);
+  --ax-primary-soft-text: var(--ax-teal-700);
+  --ax-accent:           var(--ax-blue-600);
+  --ax-accent-soft:      var(--ax-blue-50);
+  --ax-accent-soft-text: var(--ax-blue-600);
+  --ax-link:             var(--ax-teal-700);
+  --ax-focus:            var(--ax-teal-500);
+
+  /* Status tones: fg = text/icon, bg = soft fill, dot = solid marker */
+  --ax-success-fg: #0f6b4b;  --ax-success-bg: #e2f5ec;  --ax-success-dot: #17a673;
+  --ax-warning-fg: #8f5200;  --ax-warning-bg: #fff1d6;  --ax-warning-dot: #e39a16;
+  --ax-danger-fg:  #b02a24;  --ax-danger-bg:  #fde8e6;  --ax-danger-dot:  #dd4b43;
+  --ax-info-fg:    #2358c4;  --ax-info-bg:    #e4edfe;  --ax-info-dot:    #3b78ee;
+  --ax-neutral-fg: #475572;  --ax-neutral-bg: #eceff4;  --ax-neutral-dot: #8995ad;
+
+  /* Navy shell (sidebar stays navy in BOTH themes) */
+  --ax-sidebar-bg:          var(--ax-navy-900);
+  --ax-sidebar-bg-2:        var(--ax-navy-800);
+  --ax-sidebar-border:      rgb(255 255 255 / 0.07);
+  --ax-sidebar-text:        #a9b7d2;
+  --ax-sidebar-text-strong: #ffffff;
+  --ax-sidebar-hover-bg:    rgb(255 255 255 / 0.05);
+  --ax-sidebar-active-bg:   rgb(45 212 191 / 0.12);
+  --ax-sidebar-active-fg:   #ffffff;
+  --ax-sidebar-indicator:   var(--ax-teal-400);
+
+  /* Shadows (navy-tinted, never neutral grey) */
+  --ax-shadow-xs: 0 1px 2px rgb(10 23 48 / 0.05);
+  --ax-shadow-sm: 0 1px 2px rgb(10 23 48 / 0.05), 0 3px 10px -3px rgb(10 23 48 / 0.07);
+  --ax-shadow-md: 0 2px 4px rgb(10 23 48 / 0.04), 0 10px 24px -8px rgb(10 23 48 / 0.12);
+  --ax-shadow-lg: 0 4px 8px rgb(10 23 48 / 0.05), 0 24px 48px -12px rgb(10 23 48 / 0.22);
+  --ax-ring:      0 0 0 3px rgb(20 184 166 / 0.28);
+  --ax-ring-danger: 0 0 0 3px rgb(221 75 67 / 0.22);
+
+  --ax-chart-1: #0a7f72;
+  --ax-chart-2: #3b78ee;
+  --ax-chart-3: #e39a16;
+  --ax-chart-4: #dd4b43;
+  --ax-chart-5: #8995ad;
+  --ax-chart-6: #243f6e;
+  --ax-chart-grid: rgb(10 23 48 / 0.07);
+}
+
+/* ---------- 3. Semantic tokens: DARK ------------------------------------- */
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+
+  --ax-bg:             #070f1f;
+  --ax-surface:        #0d1a33;
+  --ax-surface-2:      #112143;
+  --ax-surface-sunken: #091329;
+  --ax-overlay:        rgb(2 6 15 / 0.7);
+
+  --ax-border:         #1d3059;
+  --ax-border-strong:  #2b4275;
+
+  --ax-text:           #e8edf7;
+  --ax-text-2:         #a6b4cf;
+  --ax-text-3:         #7f8fae;
+  --ax-text-inverse:   #060e1f;
+
+  --ax-primary:          var(--ax-teal-500);
+  --ax-primary-hover:    var(--ax-teal-400);
+  --ax-primary-active:   var(--ax-teal-300);
+  --ax-primary-contrast: #04141a;
+  --ax-primary-soft:     rgb(45 212 191 / 0.1);
+  --ax-primary-soft-2:   rgb(45 212 191 / 0.18);
+  --ax-primary-soft-text: var(--ax-teal-300);
+  --ax-accent:           var(--ax-blue-300);
+  --ax-accent-soft:      rgb(59 120 238 / 0.14);
+  --ax-accent-soft-text: var(--ax-blue-300);
+  --ax-link:             var(--ax-teal-300);
+  --ax-focus:            var(--ax-teal-400);
+
+  --ax-success-fg: #5fe0ac;  --ax-success-bg: rgb(23 166 115 / 0.16);  --ax-success-dot: #2fcf94;
+  --ax-warning-fg: #f6c564;  --ax-warning-bg: rgb(227 154 22 / 0.16);  --ax-warning-dot: #f0b13c;
+  --ax-danger-fg:  #ff9a93;  --ax-danger-bg:  rgb(221 75 67 / 0.18);   --ax-danger-dot:  #f26a62;
+  --ax-info-fg:    #9bbcff;  --ax-info-bg:    rgb(59 120 238 / 0.18);  --ax-info-dot:    #6a9bf5;
+  --ax-neutral-fg: #b3bfd6;  --ax-neutral-bg: rgb(143 163 199 / 0.14); --ax-neutral-dot: #8fa3c7;
+
+  --ax-sidebar-bg:   var(--ax-navy-950);
+  --ax-sidebar-bg-2: #0a1730;
+
+  --ax-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.35);
+  --ax-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.35), 0 3px 10px -3px rgb(0 0 0 / 0.4);
+  --ax-shadow-md: 0 2px 4px rgb(0 0 0 / 0.3), 0 10px 24px -8px rgb(0 0 0 / 0.55);
+  --ax-shadow-lg: 0 4px 8px rgb(0 0 0 / 0.35), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+  --ax-ring:      0 0 0 3px rgb(45 212 191 / 0.3);
+  --ax-ring-danger: 0 0 0 3px rgb(242 106 98 / 0.3);
+
+  --ax-chart-1: #2dd4bf;
+  --ax-chart-2: #6a9bf5;
+  --ax-chart-3: #f0b13c;
+  --ax-chart-4: #f26a62;
+  --ax-chart-5: #8fa3c7;
+  --ax-chart-6: #c3d0ea;
+  --ax-chart-grid: rgb(255 255 255 / 0.08);
+}
+
+/* ---------- 4. Non-color tokens ----------------------------------------- */
+:root {
+  /* Type */
+  --ax-font-sans: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ax-font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --ax-font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --ax-text-xs:   0.75rem;    /* 12 */
+  --ax-text-sm:   0.8125rem;  /* 13 */
+  --ax-text-base: 0.9375rem;  /* 15 */
+  --ax-text-md:   1.0625rem;  /* 17 */
+  --ax-text-lg:   1.25rem;    /* 20 */
+  --ax-text-xl:   1.625rem;   /* 26 */
+  --ax-text-2xl:  2.125rem;   /* 34 */
+  --ax-text-3xl:  2.75rem;    /* 44 */
+
+  --ax-leading-tight: 1.2;
+  --ax-leading-snug:  1.4;
+  --ax-leading-base:  1.55;
+
+  /* Spacing (4px base) */
+  --ax-space-1: 0.25rem;
+  --ax-space-2: 0.5rem;
+  --ax-space-3: 0.75rem;
+  --ax-space-4: 1rem;
+  --ax-space-5: 1.25rem;
+  --ax-space-6: 1.5rem;
+  --ax-space-8: 2rem;
+  --ax-space-10: 2.5rem;
+  --ax-space-12: 3rem;
+
+  /* Radii follow hierarchy: small controls < cards < overlays */
+  --ax-radius-xs: 6px;    /* checkboxes, tags */
+  --ax-radius-sm: 8px;    /* menu items, chips */
+  --ax-radius-md: 10px;   /* buttons, inputs */
+  --ax-radius-lg: 16px;   /* cards, tables */
+  --ax-radius-xl: 22px;   /* modals, hero panels */
+  --ax-radius-pill: 999px;
+
+  /* Motion */
+  --ax-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ax-dur-fast: 120ms;
+  --ax-dur: 200ms;
+  --ax-dur-slow: 320ms;
+
+  /* Layout (consumed by Phase 3) */
+  --ax-sidebar-w: 268px;
+  --ax-sidebar-w-collapsed: 80px;
+  --ax-topbar-h: 68px;
+  --ax-content-max: 1480px;
+  --ax-gutter: clamp(1rem, 2.4vw, 2rem);
+}
+
+/* ---------- 5. Map tokens onto Bootstrap 5.3 variables ------------------- */
+:root,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  --bs-body-font-family: var(--ax-font-sans);
+  --bs-body-font-size: var(--ax-text-base);
+  --bs-body-line-height: var(--ax-leading-base);
+  --bs-body-color: var(--ax-text);
+  --bs-body-color-rgb: unset;
+  --bs-body-bg: var(--ax-bg);
+  --bs-secondary-color: var(--ax-text-2);
+  --bs-tertiary-color: var(--ax-text-3);
+  --bs-emphasis-color: var(--ax-text);
+  --bs-border-color: var(--ax-border);
+  --bs-border-radius: var(--ax-radius-md);
+  --bs-border-radius-lg: var(--ax-radius-lg);
+  --bs-link-color: var(--ax-link);
+  --bs-link-hover-color: var(--ax-primary-hover);
+  --bs-link-color-rgb: unset;
+  --bs-link-hover-color-rgb: unset;
+  --bs-focus-ring-color: rgb(20 184 166 / 0.28);
+}
+
+/* ---------- 6. Base elements --------------------------------------------- */
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--ax-bg);
+  color: var(--ax-text);
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-base);
+  line-height: var(--ax-leading-base);
+  font-feature-settings: "ss01" 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;               /* guard against horizontal overflow */
+}
+
+a {
+  color: var(--ax-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--ax-dur-fast) var(--ax-ease);
+}
+a:hover { color: var(--ax-primary-hover); }
+
+::selection { background: var(--ax-primary-soft-2); color: var(--ax-text); }
+
+hr { border: 0; border-top: 1px solid var(--ax-border); opacity: 1; margin: var(--ax-space-6) 0; }
+
+/* Visible keyboard focus everywhere */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--ax-focus);
+  outline-offset: 2px;
+  border-radius: var(--ax-radius-xs);
+}
+
+/* ---------- 7. Typography ------------------------------------------------ */
+/* Fraunces carries the brand voice: page titles and key figures.
+   Figtree does everything else. */
+.ax-display,
+.ax-title,
+.ax-h1, .ax-h2 {
+  font-family: var(--ax-font-display);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  line-height: var(--ax-leading-tight);
+  color: var(--ax-text);
+  margin: 0;
+}
+.ax-display { font-size: var(--ax-text-3xl); letter-spacing: -0.025em; }
+.ax-title,
+.ax-h1      { font-size: var(--ax-text-2xl); }
+.ax-h2      { font-size: var(--ax-text-xl); }
+
+.ax-h3, .ax-h4, .ax-h5 {
+  font-family: var(--ax-font-sans);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  line-height: var(--ax-leading-snug);
+  color: var(--ax-text);
+  margin: 0;
+}
+.ax-h3 { font-size: var(--ax-text-lg); }
+.ax-h4 { font-size: var(--ax-text-md); }
+.ax-h5 { font-size: var(--ax-text-base); }
+
+.ax-lead    { font-size: var(--ax-text-md); color: var(--ax-text-2); line-height: var(--ax-leading-base); max-width: 62ch; }
+.ax-body    { font-size: var(--ax-text-base); }
+.ax-small   { font-size: var(--ax-text-sm); }
+.ax-caption { font-size: var(--ax-text-xs); color: var(--ax-text-3); }
+
+.ax-text-2 { color: var(--ax-text-2) !important; }
+.ax-text-3 { color: var(--ax-text-3) !important; }
+.ax-num    { font-variant-numeric: tabular-nums lining-nums; }
+.ax-mono   { font-family: var(--ax-font-mono); font-size: 0.92em; letter-spacing: 0; }
+.ax-measure { max-width: 68ch; }
+
+/* ---------- 8. Utilities ------------------------------------------------- */
+.ax-stack      { display: flex; flex-direction: column; gap: var(--ax-space-4); }
+.ax-stack-sm   { display: flex; flex-direction: column; gap: var(--ax-space-2); }
+.ax-row        { display: flex; align-items: center; gap: var(--ax-space-3); flex-wrap: wrap; }
+.ax-grow       { flex: 1 1 auto; min-width: 0; }
+.ax-truncate   { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ax-sr-only    {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Subtle, themed scrollbars for tables and drawers */
+.ax-scroll { scrollbar-width: thin; scrollbar-color: var(--ax-border-strong) transparent; }
+
+/* ---------- 9. Reduced motion ------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

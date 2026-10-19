@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axUnavailableModal"
+          data-ax-unavailable="Nouveau message" data-ax-unavailable-detail="L'envoi de messages nécessite le modèle Message, qui n'existe pas encore dans le backend.">
+    <i class="bi bi-pencil-square" aria-hidden="true"></i>Nouveau message
+  </button>
+{% endblock %}
+
+{% block content %}
+  <section class="ax-table-card" data-ax-table aria-label="Boîte de réception">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="messageSearch" search_label="Rechercher un expéditeur ou un objet" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Boîte de réception</caption>
+        <thead><tr>
+          <th scope="col">Expéditeur</th><th scope="col">Objet</th><th scope="col">Reçu le</th><th scope="col">Lecture</th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{% if r.read %}Lu{% else %}Non lu{% endif %}"{% if not r.read %} class="is-unread"{% endif %}>
+            <td><span class="ax-cell-person"><span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ r.sender|ax_initials }}</span><span class="ax-table__primary">{{ r.sender }}</span></span></td>
+            <td><span class="ax-msg-subject">{{ r.subject }}</span><span class="ax-msg-preview">{{ r.preview }}</span></td>
+            <td class="ax-num" style="white-space:nowrap">{{ r.received|date:"d/m/Y H:i" }}</td>
+            <td>{% if r.read %}{% include "components/status_badge.html" with status="Lu" %}{% else %}{% include "components/status_badge.html" with status="Non lu" %}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucun message ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre.</p>
+    </div>
+    <div class="ax-table-footer"><span>{{ unread }} message{{ unread|pluralize }} non lu{{ unread|pluralize }}</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-chat-left-text" title="Aucun message pour le moment" text="Les échanges avec vos clients et votre équipe apparaîtront ici." %}
+    {% endif %}
+  </section>
+{% endblock %}

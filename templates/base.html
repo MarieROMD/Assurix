@@ -1,0 +1,75 @@
+{% load static assurix_tags %}<!DOCTYPE html>
+<html lang="fr" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#1E1352">
+  <title>{% block title %}{% block page_title %}{{ page_title|default:"Assurix" }}{% endblock %}{% endblock %} · Assurix</title>
+  <link rel="icon" href="{% static 'img/assurix-mark.svg' %}" type="image/svg+xml">
+
+  {# Bootstrap 5.3 et Bootstrap Icons : chargés une seule fois (versions fournies dans static/vendor) #}
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+
+  {# Design system Assurix #}
+  <link rel="stylesheet" href="{% static 'css/assurix-design-system.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/assurix-responsive.css' %}">
+  {% block extra_css %}{% endblock %}
+
+  {# État de la barre latérale appliqué avant le premier rendu (évite un saut de mise en page) #}
+  <script>
+    try { if (localStorage.getItem("assurix-sidebar") === "collapsed") document.documentElement.setAttribute("data-ax-sidebar", "collapsed"); } catch (e) {}
+  </script>
+  {# Thème clair/sombre : sans defer, pour éviter le flash #}
+  <script src="{% static 'js/assurix-theme.js' %}"></script>
+</head>
+<body>
+  <a class="ax-skip" href="#main">Aller au contenu principal</a>
+
+  <div class="ax-app">
+    {% include "components/sidebar.html" %}
+    <div class="ax-scrim" data-ax-scrim aria-hidden="true"></div>
+
+    <div class="ax-shell">
+      {% include "components/topbar.html" %}
+
+      <main id="main" class="ax-main" tabindex="-1">
+        <div class="ax-container">
+          {% include "components/messages.html" %}
+
+          {% block page_header %}
+          <div class="ax-page-header">
+            <div class="ax-page-header__text">
+              <h1 class="ax-title">{{ page_title }}</h1>
+              {% if page_subtitle %}<p class="ax-page-header__subtitle">{{ page_subtitle }}</p>{% endif %}
+            </div>
+            <div class="ax-page-header__actions">{% block page_actions %}{% endblock %}</div>
+          </div>
+          {% endblock %}
+
+          {% if is_demo %}{% include "components/demo_banner.html" %}{% endif %}
+
+          {% block content %}{% block page_content %}{% endblock %}{% endblock %}
+        </div>
+      </main>
+
+      <footer class="ax-footer">
+        <div class="ax-container">
+          <span>© {% now "Y" %} Assurix</span>
+          <span>Plateforme de gestion d'assurance</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  {% include "components/backend_modal.html" %}
+  {% block modals %}{% endblock %}
+
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="{% static 'js/assurix-app.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

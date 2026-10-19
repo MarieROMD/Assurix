@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axUnavailableModal"
+          data-ax-unavailable="Planifier une expertise" data-ax-unavailable-detail="La planification d'expertises nécessite le modèle Expertise, qui n'existe pas encore dans le backend.">
+    <i class="bi bi-plus-lg" aria-hidden="true"></i>Planifier une expertise
+  </button>
+{% endblock %}
+
+{% block content %}
+  {% if summary %}
+  <div class="row g-3 mb-4">
+    {% for s in summary %}<div class="col-6 col-xl-3">{% include "components/stat_card.html" with label=s.label value=s.value icon=s.icon tone=s.tone compact=True only %}</div>{% endfor %}
+  </div>
+  {% endif %}
+
+  <section class="ax-table-card" data-ax-table aria-label="Liste des expertises">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="expertiseSearch" search_label="Rechercher une expertise, un expert ou un client" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Liste des expertises</caption>
+        <thead><tr>
+          <th scope="col">Référence</th><th scope="col">Sinistre</th><th scope="col">Client</th><th scope="col">Expert</th>
+          <th scope="col">Rendez-vous</th><th scope="col">Progression</th><th scope="col">Statut</th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{{ r.status }}">
+            <td class="is-ref">{{ r.ref }}</td>
+            <td class="is-ref">{{ r.claim }}</td>
+            <td><span class="ax-table__primary">{{ r.client }}</span></td>
+            <td><span class="ax-cell-person"><span class="ax-avatar ax-avatar--sm ax-avatar--blue" aria-hidden="true">{{ r.expert|ax_initials }}</span>{{ r.expert }}</span></td>
+            <td class="ax-num">{{ r.appointment|date:"d/m/Y" }}</td>
+            <td>
+              <div class="ax-expert-progress">
+                <div class="ax-progress" role="progressbar" aria-valuenow="{{ r.progress }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progression de {{ r.ref }}"><div class="ax-progress__bar" style="width: {{ r.progress }}%"></div></div>
+                <span>{{ r.progress }} %</span>
+              </div>
+            </td>
+            <td>{% include "components/status_badge.html" with status=r.status %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucune expertise ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre de statut.</p>
+    </div>
+    <div class="ax-table-footer"><span>Pagination à brancher avec les vraies données</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-clipboard2-check" title="Aucune expertise pour le moment" text="Les affectations, rendez-vous et l'avancement des expertises apparaîtront ici." action_label="Planifier une expertise" action_detail="Le modèle Expertise n'existe pas encore dans le backend." %}
+    {% endif %}
+  </section>
+{% endblock %}

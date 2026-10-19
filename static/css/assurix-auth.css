@@ -1,0 +1,44 @@
+/* ==========================================================================
+   ASSURIX AUTH  ·  assurix-auth.css
+   Split-screen login (brand panel + form).
+   ========================================================================== */
+.ax-auth { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-height: 100vh; min-height: 100dvh; background: var(--ax-bg); }
+
+/* Brand panel */
+.ax-auth__brand {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--ax-space-8);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background: var(--ax-navy-900); color: #e8edf7;
+}
+.ax-auth__brand::before {
+  content: ""; position: absolute; z-index: -1; width: 780px; height: 780px; right: -260px; bottom: -300px; border-radius: 50%;
+  background: repeating-radial-gradient(circle at center, transparent 0 58px, rgb(45 212 191 / 0.13) 58px 59px);
+  -webkit-mask-image: radial-gradient(circle at center, #000 25%, transparent 70%); mask-image: radial-gradient(circle at center, #000 25%, transparent 70%);
+}
+.ax-auth__brand-top img { height: 34px; width: auto; display: block; }
+.ax-auth__pitch { max-width: 30rem; }
+.ax-auth__pitch h2 { font-family: var(--ax-font-display); font-optical-sizing: auto; font-weight: 500; font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.12; letter-spacing: -0.02em; color: #fff; margin: 0 0 var(--ax-space-4); }
+.ax-auth__pitch p { margin: 0; color: #a9b7d2; font-size: var(--ax-text-md); line-height: 1.55; }
+.ax-auth__visual { width: 100%; max-width: 26rem; height: auto; margin-top: var(--ax-space-6); }
+.ax-auth__points { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ax-space-3); }
+.ax-auth__points li { display: flex; align-items: center; gap: var(--ax-space-3); font-size: var(--ax-text-sm); color: #c5d0e6; }
+.ax-auth__points .bi { color: var(--ax-teal-400); font-size: 1.1rem; }
+
+/* Form panel */
+.ax-auth__panel { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: clamp(1.5rem, 4vw, 3rem); position: relative; }
+.ax-auth__theme { position: absolute; top: 1rem; right: 1rem; }
+.ax-auth__card { width: 100%; max-width: 25rem; }
+.ax-auth__logo-mobile { display: none; }
+.ax-auth__card h1 { margin-bottom: var(--ax-space-2); }
+.ax-auth__card .ax-lead { margin-bottom: var(--ax-space-6); font-size: var(--ax-text-base); }
+.ax-auth__foot { margin-top: var(--ax-space-6); font-size: var(--ax-text-sm); color: var(--ax-text-3); }
+.ax-auth__copy { position: absolute; bottom: 1rem; left: 0; right: 0; text-align: center; font-size: var(--ax-text-xs); color: var(--ax-text-3); }
+
+@media (max-width: 991.98px) {
+  .ax-auth { grid-template-columns: 1fr; }
+  .ax-auth__brand { display: none; }
+  .ax-auth__panel { justify-content: flex-start; padding-top: clamp(3.5rem, 12vh, 6rem); padding-bottom: 4rem; }
+  .ax-auth__logo-mobile { display: block; margin-bottom: var(--ax-space-8); }
+  .ax-auth__logo-mobile img { height: 34px; width: auto; }
+}

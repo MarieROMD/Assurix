@@ -1,0 +1,15 @@
+{% comment %}
+  Carte d'indicateur.
+  Paramètres : label, value, icon, tone (blue|warning|danger|vide), meta, href, compact, money
+  Usage : {% include "components/stat_card.html" with label="Clients" value=kpis.clients icon="bi-people" only %}
+  Une valeur absente s'affiche « — » (jamais une valeur inventée).
+{% endcomment %}
+{% load assurix_tags %}
+{% if href %}<a class="ax-card ax-kpi ax-kpi--link{% if compact %} ax-kpi--compact{% endif %}" href="{{ href }}">{% else %}<article class="ax-card ax-kpi{% if compact %} ax-kpi--compact{% endif %}">{% endif %}
+  <div class="ax-kpi__top">
+    <h3 class="ax-kpi__label">{{ label }}</h3>
+    {% if icon %}<span class="ax-kpi__icon{% if tone %} ax-kpi__icon--{{ tone }}{% endif %}"><i class="bi {{ icon }}" aria-hidden="true"></i></span>{% endif %}
+  </div>
+  <p class="ax-kpi__value">{% if money %}{{ value|ax_money }}{% else %}{{ value|ax_int }}{% endif %}</p>
+  {% if meta %}<div class="ax-kpi__meta">{{ meta }}</div>{% endif %}
+{% if href %}</a>{% else %}</article>{% endif %}

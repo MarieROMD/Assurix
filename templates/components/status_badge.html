@@ -1,0 +1,1 @@
+{% load assurix_tags %}{% with tone=status|ax_tone %}<span class="ax-badge{% if tone %} ax-badge--{{ tone }}{% endif %}">{{ status }}</span>{% endwith %}

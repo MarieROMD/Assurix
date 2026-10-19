@@ -1,0 +1,96 @@
+{% load static assurix_tags %}
+{% ax_shell as shell %}
+{% ax_search_items as search_items %}
+<header class="ax-topbar">
+  <div class="ax-topbar__start">
+    <button type="button" class="ax-icon-btn ax-menu-btn" data-ax-sidebar-open aria-controls="axSidebar" aria-expanded="false" aria-label="Ouvrir le menu">
+      <i class="bi bi-list" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="ax-icon-btn ax-collapse-btn" data-ax-sidebar-collapse aria-controls="axSidebar" aria-pressed="false" aria-label="Réduire le menu">
+      <i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i>
+    </button>
+    {% include "components/breadcrumb.html" %}
+  </div>
+
+  <div class="ax-search" id="axSearch" role="search">
+    <label class="ax-sr-only" for="axSearchInput">Aller à un module</label>
+    <div class="ax-input-group">
+      <i class="bi bi-search ax-input-group__icon" aria-hidden="true"></i>
+      <input id="axSearchInput" class="ax-input ax-input--sm" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Aller à un module…" role="combobox" aria-expanded="false" aria-controls="axSearchPanel" aria-autocomplete="list">
+      <span class="ax-input-group__kbd" aria-hidden="true">/</span>
+    </div>
+    <div class="ax-search__panel" id="axSearchPanel" role="listbox" aria-label="Modules" hidden></div>
+    {{ search_items|json_script:"axSearchItems" }}
+  </div>
+
+  <div class="ax-topbar__end">
+    <button type="button" class="ax-icon-btn ax-search-toggle" data-ax-search-toggle aria-controls="axSearch" aria-expanded="false" aria-label="Rechercher un module">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </button>
+
+    <button type="button" class="ax-icon-btn ax-theme-toggle" data-ax-theme-toggle aria-pressed="false" aria-label="Passer au thème sombre">
+      <i class="bi bi-sun ax-theme-toggle__sun" aria-hidden="true"></i>
+      <i class="bi bi-moon-stars ax-theme-toggle__moon" aria-hidden="true"></i>
+    </button>
+
+    <div class="dropdown">
+      <button type="button" class="ax-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
+              aria-label="Notifications{% if shell.unread %}, {{ shell.unread }} non lue{{ shell.unread|pluralize }}{% endif %}">
+        <i class="bi bi-bell" aria-hidden="true"></i>
+        {% if shell.unread %}<span class="ax-icon-btn__dot" aria-hidden="true"></span>{% endif %}
+      </button>
+      <div class="dropdown-menu dropdown-menu-end ax-menu ax-menu--wide">
+        <div class="ax-menu__head">
+          <strong>Notifications</strong>
+          {% if shell.is_demo %}<span class="ax-badge ax-badge--warning ax-badge--plain">Démo</span>{% endif %}
+        </div>
+        {% if shell.notifications %}
+        <ul class="ax-menu__list">
+          {% for n in shell.notifications %}
+          <li>
+            <a class="ax-notif{% if not n.read %} is-unread{% endif %}" href="{{ n.url_name|ax_url }}">
+              <span class="ax-notif__icon{% if n.tone != 'info' %} ax-notif__icon--{{ n.tone }}{% endif %}"><i class="bi {{ n.icon }}" aria-hidden="true"></i></span>
+              <span class="ax-notif__text">{{ n.text }}<span class="ax-notif__time">Il y a {{ n.created|timesince }}</span></span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="ax-empty" style="padding: var(--ax-space-8) var(--ax-space-4)">
+          <span class="ax-empty__icon"><i class="bi bi-bell-slash" aria-hidden="true"></i></span>
+          <p class="ax-empty__title">Aucune notification</p>
+          <p class="ax-empty__text">Les alertes et rappels apparaîtront ici.</p>
+        </div>
+        {% endif %}
+        <div class="ax-menu__foot"><a href="{% url 'notification_list' %}">Voir toutes les notifications</a></div>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button type="button" class="ax-user-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menu du profil, {{ user|ax_name }}">
+        <span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ user|ax_initials }}</span>
+        <span class="ax-user-btn__text">
+          <span class="ax-user-btn__name">{{ user|ax_name }}</span>
+          <span class="ax-user-btn__role">{{ user|ax_role }}</span>
+        </span>
+        <i class="bi bi-chevron-down" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end ax-menu">
+        <li class="ax-menu__user">
+          <span class="ax-avatar" aria-hidden="true">{{ user|ax_initials }}</span>
+          <span><b>{{ user|ax_name }}</b><span>{{ user|ax_role }}</span></span>
+        </li>
+        <li><span class="dropdown-item disabled" aria-disabled="true"><i class="bi bi-person" aria-hidden="true"></i>Mon profil (bientôt disponible)</span></li>
+        {% if user.is_staff %}<li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="bi bi-gear" aria-hidden="true"></i>Administration Django</a></li>{% endif %}
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item is-danger"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Se déconnecter</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

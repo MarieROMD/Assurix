@@ -1,0 +1,18 @@
+{% comment %}
+  Recherche + filtres de statut + compteur, pilotés par assurix-app.js.
+  À placer dans <div class="ax-table-toolbar"> à l'intérieur d'un élément [data-ax-table].
+  Paramètres : search_id, search_label, filters (liste de statuts, doit correspondre à data-status des lignes)
+{% endcomment %}
+<div class="ax-input-group" style="flex:1 1 16rem; max-width:22rem">
+  <i class="bi bi-search ax-input-group__icon" aria-hidden="true"></i>
+  <label class="ax-sr-only" for="{{ search_id }}">{{ search_label }}</label>
+  <input id="{{ search_id }}" type="search" class="ax-input ax-input--sm" placeholder="{{ search_label }}" autocomplete="off" data-ax-table-search>
+</div>
+{% if filters %}
+<div class="ax-row" style="gap:.4rem" role="group" aria-label="Filtrer par statut">
+  <button type="button" class="ax-chip" aria-pressed="true" data-ax-filter="">Tous</button>
+  {% for f in filters %}<button type="button" class="ax-chip" aria-pressed="false" data-ax-filter="{{ f }}">{{ f }}</button>{% endfor %}
+</div>
+{% endif %}
+<span class="ax-table-toolbar__spacer"></span>
+<span class="ax-small ax-text-3 ax-result-count" data-ax-count aria-live="polite"></span>

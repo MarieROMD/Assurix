@@ -1,0 +1,25 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# PyCharm
+.idea/
+
+# Configuration et secrets
+.env
+.env.*
+
+# Fichiers générés par Django
+staticfiles/
+
+# Base de données locale
+# Décommente la ligne suivante seulement si
+# tu ne souhaites pas partager la base SQLite
+# db.sqlite3

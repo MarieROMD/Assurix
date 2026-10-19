@@ -1,0 +1,13 @@
+{# Messages Django (django.contrib.messages) affichés sous forme d'alertes fermables #}
+{% if messages %}
+<div class="ax-stack-sm mb-3">
+  {% for message in messages %}
+  <div class="ax-alert{% if message.level_tag == 'error' %} ax-alert--danger{% elif message.level_tag == 'success' %} ax-alert--success{% elif message.level_tag == 'warning' %} ax-alert--warning{% endif %}"
+       role="{% if message.level_tag == 'error' %}alert{% else %}status{% endif %}">
+    <i class="bi {% if message.level_tag == 'error' %}bi-x-octagon{% elif message.level_tag == 'success' %}bi-check-circle{% elif message.level_tag == 'warning' %}bi-exclamation-triangle{% else %}bi-info-circle{% endif %} ax-alert__icon" aria-hidden="true"></i>
+    <div class="ax-alert__body"><p class="ax-alert__title">{{ message }}</p></div>
+    <button type="button" class="ax-alert__close" data-ax-dismiss aria-label="Fermer le message"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

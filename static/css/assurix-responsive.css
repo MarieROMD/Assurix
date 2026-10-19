@@ -1,0 +1,73 @@
+/* ==========================================================================
+   ASSURIX RESPONSIVE  ·  assurix-responsive.css
+   Targets: 1440 desktop · 1024 laptop · 768 tablet · 390 mobile
+   (Sidebar drawer behaviour lives in assurix-layout.css at 992px.)
+   ========================================================================== */
+
+/* Laptop and below */
+@media (max-width: 1199.98px) {
+  .ax-user-btn__text { display: none; }
+  .ax-user-btn { padding-right: 0.25rem; }
+  .ax-user-btn .bi-chevron-down { display: none; }
+}
+
+/* Tablet and below */
+@media (max-width: 991.98px) {
+  :root { --ax-topbar-h: 64px; }
+  .ax-main { padding-top: var(--ax-space-5); }
+  .ax-hero { padding: var(--ax-space-6); }
+  .ax-title, .ax-h1 { font-size: 1.85rem; }
+}
+
+/* Small tablet and phones: search becomes a row under the topbar */
+@media (max-width: 767.98px) {
+  .ax-search-toggle { display: inline-grid; }
+  .ax-search {
+    position: absolute; top: 100%; left: 0; right: 0; max-width: none; margin: 0;
+    padding: 0.75rem var(--ax-gutter); display: none;
+    background: var(--ax-bg); border-bottom: 1px solid var(--ax-border); box-shadow: var(--ax-shadow-md);
+  }
+  .ax-search.is-open { display: block; }
+  .ax-search__panel { left: var(--ax-gutter); right: var(--ax-gutter); }
+  .ax-topbar__spacer { display: none; }
+  .ax-topbar__end { margin-left: auto; }
+  .ax-page-header { align-items: stretch; }
+  .ax-page-header__actions { width: 100%; }
+  .ax-page-header__actions .ax-btn { flex: 1 1 auto; }
+  .ax-table-toolbar { padding: var(--ax-space-3) var(--ax-space-4); }
+  .ax-table-toolbar > .ax-input-group { flex: 1 1 100% !important; max-width: none !important; }
+  .ax-table-toolbar .ax-btn { flex: 1 1 auto; }
+  .ax-table-toolbar > .ax-row { overflow-x: auto; flex-wrap: nowrap !important; max-width: 100%; padding-bottom: 2px; scrollbar-width: none; }
+  .ax-table-toolbar > .ax-row::-webkit-scrollbar { display: none; }
+  .ax-chip { flex: none; }
+  .ax-card__header, .ax-card__body, .ax-card__footer { padding-inline: var(--ax-space-4); }
+  .ax-task { padding-inline: var(--ax-space-4); }
+  .ax-chart { height: 240px; }
+}
+
+/* Phones */
+@media (max-width: 575.98px) {
+  .ax-breadcrumb { display: none; }
+  .ax-main { padding-inline: var(--ax-space-4); }
+  .ax-topbar { padding-inline: var(--ax-space-3); gap: var(--ax-space-2); }
+  .ax-hero { padding: var(--ax-space-5); border-radius: var(--ax-radius-lg); }
+  .ax-hero .ax-btn-group .ax-btn { flex: 1 1 100%; }
+  .ax-title, .ax-h1 { font-size: 1.6rem; }
+  .ax-kpi__value { font-size: 1.75rem; }
+  .ax-quick { grid-template-columns: 1fr; }
+  .ax-table-footer { flex-direction: column; align-items: flex-start; }
+  .ax-footer .ax-container { flex-direction: column; }
+  .ax-menu--wide.dropdown-menu { position: fixed !important; inset: calc(var(--ax-topbar-h) + 0.35rem) 0.75rem auto 0.75rem !important; width: auto; transform: none !important; }
+}
+
+/* Large screens: keep content comfortable */
+@media (min-width: 1600px) {
+  :root { --ax-content-max: 1560px; }
+}
+
+/* Print: just the content */
+@media print {
+  .ax-sidebar, .ax-topbar, .ax-footer, .ax-scrim, .ax-page-header__actions { display: none !important; }
+  .ax-shell { margin-left: 0 !important; }
+  .ax-card, .ax-table-card { box-shadow: none; }
+}

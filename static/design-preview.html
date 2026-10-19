@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assurix · Design system (aperçu)</title>
+  <link rel="icon" href="./img/assurix-mark.svg" type="image/svg+xml">
+
+  <!-- Bootstrap 5.3 + Bootstrap Icons (vendored, loaded once) -->
+  <link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- Assurix design system -->
+  <link rel="stylesheet" href="./css/assurix-design-system.css">
+  <link rel="stylesheet" href="./css/assurix-components.css">
+
+  <!-- Theme: must run before first paint (no defer) -->
+  <script src="./js/assurix-theme.js"></script>
+
+  <!-- Styles for this preview page only (not part of the design system) -->
+  <style>
+    .pv-shell { max-width: 1180px; margin: 0 auto; padding: 0 var(--ax-gutter) var(--ax-space-12); }
+    .pv-bar { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ax-bg) 88%, transparent);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--ax-border); }
+    .pv-bar .pv-shell { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4rem; padding-bottom: 0; }
+    .pv-section { margin-top: var(--ax-space-12); }
+    .pv-section > header { margin-bottom: var(--ax-space-5); }
+    .pv-section > header p { margin: 0.35rem 0 0; color: var(--ax-text-2); font-size: var(--ax-text-sm); max-width: 62ch; }
+    .pv-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--ax-space-3); }
+    .pv-swatch { border: 1px solid var(--ax-border); border-radius: var(--ax-radius-md); overflow: hidden; background: var(--ax-surface); }
+    .pv-swatch i { display: block; height: 3.25rem; border-bottom: 1px solid var(--ax-border); }
+    .pv-swatch span { display: block; padding: 0.5rem 0.65rem; font-size: var(--ax-text-xs); line-height: 1.35; }
+    .pv-swatch b { display: block; font-weight: 650; color: var(--ax-text); }
+    .pv-swatch code { color: var(--ax-text-3); font-family: var(--ax-font-mono); font-size: 0.6875rem; }
+    .pv-logo-tile { display: flex; align-items: center; justify-content: center; min-height: 8rem; border-radius: var(--ax-radius-lg); border: 1px solid var(--ax-border); }
+    .pv-logo-tile--navy { background: var(--ax-navy-900); border-color: var(--ax-navy-900); }
+    .pv-type-row { display: grid; grid-template-columns: 9rem 1fr; gap: var(--ax-space-4); align-items: baseline; padding: var(--ax-space-3) 0; border-bottom: 1px solid var(--ax-border); }
+    .pv-type-row:last-child { border-bottom: 0; }
+    .pv-type-row small { color: var(--ax-text-3); font-size: var(--ax-text-xs); }
+    @media (max-width: 575.98px) { .pv-type-row { grid-template-columns: 1fr; gap: 0.25rem; } }
+  </style>
+</head>
+<body>
+
+<div class="pv-bar">
+  <div class="pv-shell">
+    <span><img src="./img/assurix-logo.svg" alt="Assurix" height="32" class="ax-logo--for-light"><img src="./img/assurix-logo-light.svg" alt="Assurix" height="32" class="ax-logo--for-dark"></span>
+    <div class="ax-row" style="gap:.5rem">
+      <span class="ax-badge ax-badge--warning ax-badge--plain d-none d-sm-inline-flex">Aperçu du design system</span>
+      <button type="button" class="ax-btn ax-btn--icon ax-btn--sm ax-theme-toggle" data-ax-theme-toggle aria-pressed="false" aria-label="Passer au thème sombre">
+        <i class="bi bi-sun ax-theme-toggle__sun" aria-hidden="true"></i>
+        <i class="bi bi-moon-stars ax-theme-toggle__moon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="pv-shell">
+
+  <div class="ax-page-header" style="margin-top: var(--ax-space-10)">
+    <div class="ax-page-header__text">
+      <h1 class="ax-title">Design system Assurix</h1>
+      <p class="ax-page-header__subtitle">Couleurs, typographie et composants de base. Tous les exemples de cette page sont fictifs et ne proviennent d'aucune base de données.</p>
+    </div>
+  </div>
+
+  <!-- ================= Identité ================= -->
+  <section class="pv-section" aria-labelledby="s-identite">
+    <header><h2 class="ax-h3" id="s-identite">Logo</h2>
+      <p>Le monogramme associe un bouclier et une arche : la protection qui se referme sur le client. Quatre fichiers SVG, avec le texte du logo converti en tracés (aucune police requise).</p></header>
+    <div class="row g-3">
+      <div class="col-12 col-md-6"><div class="pv-logo-tile"><img src="./img/assurix-logo.svg" alt="Logo Assurix sur fond clair" height="48"></div></div>
+      <div class="col-12 col-md-6"><div class="pv-logo-tile pv-logo-tile--navy"><img src="./img/assurix-logo-light.svg" alt="Logo Assurix sur fond marine" height="48"></div></div>
+      <div class="col-6 col-md-3"><div class="pv-logo-tile"><img src="./img/assurix-mark.svg" alt="Monogramme Assurix sur fond clair" height="48"></div></div>
+      <div class="col-6 col-md-3"><div class="pv-logo-tile pv-logo-tile--navy"><img src="./img/assurix-mark-light.svg" alt="Monogramme Assurix sur fond marine" height="48"></div></div>
+    </div>
+  </section>
+
+  <!-- ================= Couleurs ================= -->
+  <section class="pv-section" aria-labelledby="s-couleurs">
+    <header><h2 class="ax-h3" id="s-couleurs">Couleurs</h2>
+      <p>Jetons sémantiques : les composants utilisent ces noms, jamais des valeurs brutes, ce qui permet au thème sombre de fonctionner sans règles supplémentaires.</p></header>
+
+    <h3 class="ax-h5 mb-2">Marque</h3>
+    <div class="pv-swatches mb-4">
+      <div class="pv-swatch"><i style="background:var(--ax-navy-900)"></i><span><b>Marine</b><code>#0A1730</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-navy-700)"></i><span><b>Marine clair</b><code>#172E57</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-teal-600)"></i><span><b>Émeraude (action)</b><code>#0A7F72</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-teal-400)"></i><span><b>Émeraude vif</b><code>#2DD4BF</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-blue-600)"></i><span><b>Bleu repère</b><code>#2358C4</code></span></div>
+    </div>
+
+    <h3 class="ax-h5 mb-2">Surfaces et texte (suivent le thème)</h3>
+    <div class="pv-swatches mb-4">
+      <div class="pv-swatch"><i style="background:var(--ax-bg)"></i><span><b>Fond</b><code>--ax-bg</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-surface)"></i><span><b>Surface</b><code>--ax-surface</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-border-strong)"></i><span><b>Bordure</b><code>--ax-border-strong</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-text)"></i><span><b>Texte</b><code>--ax-text</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-text-3)"></i><span><b>Texte discret</b><code>--ax-text-3</code></span></div>
+    </div>
+
+    <h3 class="ax-h5 mb-2">Statuts</h3>
+    <div class="pv-swatches">
+      <div class="pv-swatch"><i style="background:var(--ax-success-dot)"></i><span><b>Succès</b><code>--ax-success-*</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-warning-dot)"></i><span><b>Attention</b><code>--ax-warning-*</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-danger-dot)"></i><span><b>Danger</b><code>--ax-danger-*</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-info-dot)"></i><span><b>Information</b><code>--ax-info-*</code></span></div>
+      <div class="pv-swatch"><i style="background:var(--ax-neutral-dot)"></i><span><b>Neutre</b><code>--ax-neutral-*</code></span></div>
+    </div>
+  </section>
+
+  <!-- ================= Typographie ================= -->
+  <section class="pv-section" aria-labelledby="s-typo">
+    <header><h2 class="ax-h3" id="s-typo">Typographie</h2>
+      <p>Fraunces (empattement, à axe optique) porte la voix de la marque : titres de page et chiffres clés. Figtree assure toute l'interface. Les deux polices sont auto-hébergées.</p></header>
+    <div class="ax-card"><div class="ax-card__body">
+      <div class="pv-type-row"><small>Display · Fraunces 44</small><div class="ax-display">Protéger, simplement</div></div>
+      <div class="pv-type-row"><small>Titre de page · 34</small><div class="ax-title">Portefeuille de contrats</div></div>
+      <div class="pv-type-row"><small>Titre de section · 26</small><div class="ax-h2">Sinistres à traiter</div></div>
+      <div class="pv-type-row"><small>Titre de bloc · Figtree 20</small><div class="ax-h3">Paiements du mois</div></div>
+      <div class="pv-type-row"><small>Texte · 15</small><p class="mb-0 ax-measure">Un client peut détenir plusieurs contrats. Chaque contrat suit sa propre échéance, ses paiements et ses éventuels sinistres.</p></div>
+      <div class="pv-type-row"><small>Secondaire · 13</small><p class="mb-0 ax-small ax-text-2">Dernière mise à jour il y a 2 minutes</p></div>
+      <div class="pv-type-row"><small>Chiffres tabulaires</small><div class="ax-num ax-mono">CTR-2026-00128 &nbsp; 1 240,00 DT &nbsp; 15/10/2026</div></div>
+    </div></div>
+  </section>
+
+  <!-- ================= Boutons ================= -->
+  <section class="pv-section" aria-labelledby="s-boutons">
+    <header><h2 class="ax-h3" id="s-boutons">Boutons</h2>
+      <p>Une seule action principale par zone. Les libellés disent ce qui se passe : « Enregistrer le client », pas « Valider ».</p></header>
+    <div class="ax-card"><div class="ax-card__body ax-stack">
+      <div class="ax-btn-group">
+        <button type="button" class="ax-btn ax-btn--primary"><i class="bi bi-plus-lg" aria-hidden="true"></i>Nouveau contrat</button>
+        <button type="button" class="ax-btn">Exporter</button>
+        <button type="button" class="ax-btn ax-btn--soft"><i class="bi bi-funnel" aria-hidden="true"></i>Filtrer</button>
+        <button type="button" class="ax-btn ax-btn--ghost">Annuler</button>
+        <button type="button" class="ax-btn ax-btn--danger"><i class="bi bi-trash3" aria-hidden="true"></i>Supprimer</button>
+        <button type="button" class="ax-btn ax-btn--navy">Action marine</button>
+        <button type="button" class="ax-btn ax-btn--primary" disabled>Désactivé</button>
+      </div>
+      <div class="ax-btn-group" style="align-items:center">
+        <button type="button" class="ax-btn ax-btn--primary ax-btn--sm">Petit</button>
+        <button type="button" class="ax-btn ax-btn--primary">Standard</button>
+        <button type="button" class="ax-btn ax-btn--primary ax-btn--lg">Grand</button>
+        <button type="button" class="ax-btn ax-btn--icon" aria-label="Plus d'actions"><i class="bi bi-three-dots" aria-hidden="true"></i></button>
+        <div class="ax-segmented" role="group" aria-label="Période">
+          <button type="button" aria-pressed="true">7 jours</button>
+          <button type="button" aria-pressed="false">30 jours</button>
+          <button type="button" aria-pressed="false">12 mois</button>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- ================= Cartes ================= -->
+  <section class="pv-section" aria-labelledby="s-cartes">
+    <header><h2 class="ax-h3" id="s-cartes">Cartes et indicateurs</h2>
+      <p>Le panneau marine avec arcs concentriques est l'unique élément expressif, réservé à l'accueil du tableau de bord. Tout le reste reste sobre.</p></header>
+
+    <div class="ax-hero mb-3">
+      <div class="row align-items-center g-3">
+        <div class="col-lg-8">
+          <h3 class="ax-h2">Bonjour, Amira</h3>
+          <p class="ax-text-2 mb-3 ax-measure" style="font-size:var(--ax-text-md)">Voici ce qui demande votre attention aujourd'hui.</p>
+          <div class="ax-btn-group">
+            <button type="button" class="ax-btn ax-btn--primary">Voir les tâches</button>
+            <button type="button" class="ax-btn ax-btn--ghost" style="color:#cfd9ec">Nouvelle demande</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <article class="ax-card ax-kpi">
+          <div class="ax-kpi__top"><h3 class="ax-kpi__label">Clients</h3><span class="ax-kpi__icon"><i class="bi bi-people" aria-hidden="true"></i></span></div>
+          <p class="ax-kpi__value">1 284</p>
+          <div class="ax-kpi__meta"><span class="ax-delta ax-delta--up"><i class="bi bi-arrow-up-right" aria-hidden="true"></i>3,2 %</span>ce mois-ci</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <article class="ax-card ax-kpi">
+          <div class="ax-kpi__top"><h3 class="ax-kpi__label">Contrats actifs</h3><span class="ax-kpi__icon ax-kpi__icon--blue"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span></div>
+          <p class="ax-kpi__value">932</p>
+          <div class="ax-kpi__meta"><span class="ax-delta ax-delta--flat">0 %</span>stable</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <article class="ax-card ax-kpi">
+          <div class="ax-kpi__top"><h3 class="ax-kpi__label">Demandes en attente</h3><span class="ax-kpi__icon ax-kpi__icon--warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span></div>
+          <p class="ax-kpi__value">47</p>
+          <div class="ax-kpi__meta"><span class="ax-delta ax-delta--down"><i class="bi bi-arrow-down-right" aria-hidden="true"></i>5 %</span>vs mois dernier</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <article class="ax-card ax-kpi">
+          <div class="ax-kpi__top"><h3 class="ax-kpi__label">Sinistres à traiter</h3><span class="ax-kpi__icon ax-kpi__icon--danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span></div>
+          <p class="ax-kpi__value">12</p>
+          <div class="ax-kpi__meta">dont 3 en retard</div>
+        </article>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-12 col-lg-6">
+        <div class="ax-card">
+          <div class="ax-card__header"><div><h3 class="ax-card__title">Taux de renouvellement</h3><p class="ax-card__subtitle">Contrats arrivant à échéance ce trimestre</p></div>
+            <button type="button" class="ax-btn ax-btn--ghost ax-btn--sm">Détails</button></div>
+          <div class="ax-card__body">
+            <div class="ax-row" style="gap:1.25rem">
+              <div class="ax-ring-gauge" style="--value:72" role="img" aria-label="72 pour cent"><span>72 %</span></div>
+              <div class="ax-grow ax-stack-sm">
+                <div class="ax-small ax-text-2">Renouvelés</div>
+                <div class="ax-progress" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Renouvelés"><div class="ax-progress__bar" style="width:72%"></div></div>
+                <div class="ax-small ax-text-2">En attente de réponse</div>
+                <div class="ax-progress" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" aria-label="En attente de réponse"><div class="ax-progress__bar ax-progress__bar--warning" style="width:18%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="ax-card__footer">Valeurs d'exemple pour illustrer le composant.</div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="ax-card ax-card--interactive">
+          <div class="ax-card__header"><h3 class="ax-card__title">Chargement</h3><span class="ax-badge ax-badge--info">Squelette</span></div>
+          <div class="ax-card__body ax-stack-sm" aria-hidden="true">
+            <span class="ax-skeleton" style="width:60%"></span><span class="ax-skeleton" style="width:90%"></span><span class="ax-skeleton" style="width:75%"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Badges ================= -->
+  <section class="pv-section" aria-labelledby="s-badges">
+    <header><h2 class="ax-h3" id="s-badges">Badges de statut</h2>
+      <p>Couleur et libellé toujours associés : le statut ne repose jamais sur la couleur seule.</p></header>
+    <div class="ax-card"><div class="ax-card__body ax-stack">
+      <div class="ax-row"><span class="ax-small ax-text-2" style="width:7rem">Contrats</span>
+        <span class="ax-badge ax-badge--success">Actif</span><span class="ax-badge ax-badge--warning">À renouveler</span><span class="ax-badge ax-badge--danger">Expiré</span><span class="ax-badge">Résilié</span></div>
+      <div class="ax-row"><span class="ax-small ax-text-2" style="width:7rem">Paiements</span>
+        <span class="ax-badge ax-badge--success">Payé</span><span class="ax-badge ax-badge--info">Planifié</span><span class="ax-badge ax-badge--danger">En retard</span></div>
+      <div class="ax-row"><span class="ax-small ax-text-2" style="width:7rem">Sinistres</span>
+        <span class="ax-badge ax-badge--info">Déclaré</span><span class="ax-badge ax-badge--warning">En expertise</span><span class="ax-badge ax-badge--brand">Accepté</span><span class="ax-badge">Clos</span></div>
+      <div class="ax-row"><span class="ax-small ax-text-2" style="width:7rem">Compteurs</span>
+        <span class="ax-count">3</span><span class="ax-badge ax-badge--brand ax-badge--plain">Nouveau</span></div>
+    </div></div>
+  </section>
+
+  <!-- ================= Tableau ================= -->
+  <section class="pv-section" aria-labelledby="s-tableau">
+    <header><h2 class="ax-h3" id="s-tableau">Tableau</h2>
+      <p>Pas de zébrage ni de majuscules : un en-tête discret, des séparateurs fins, les montants alignés à droite en chiffres tabulaires.</p></header>
+
+    <div class="ax-demo-banner mb-3" role="note"><i class="bi bi-info-circle" aria-hidden="true"></i><span><strong>Données de démonstration.</strong> Les lignes ci-dessous sont fictives.</span></div>
+
+    <div class="ax-table-card">
+      <div class="ax-table-toolbar">
+        <div class="ax-input-group" style="flex:1 1 16rem; max-width:22rem">
+          <i class="bi bi-search ax-input-group__icon" aria-hidden="true"></i>
+          <label class="ax-sr-only" for="pv-search">Rechercher un contrat</label>
+          <input id="pv-search" type="search" class="ax-input ax-input--sm" placeholder="Rechercher un contrat ou un client">
+        </div>
+        <div class="ax-row" style="gap:.4rem" role="group" aria-label="Filtrer par statut">
+          <button type="button" class="ax-chip" aria-pressed="true">Tous</button>
+          <button type="button" class="ax-chip" aria-pressed="false">Actifs</button>
+          <button type="button" class="ax-chip" aria-pressed="false">À renouveler</button>
+        </div>
+        <span class="ax-table-toolbar__spacer"></span>
+        <button type="button" class="ax-btn ax-btn--primary ax-btn--sm"><i class="bi bi-plus-lg" aria-hidden="true"></i>Nouveau contrat</button>
+      </div>
+      <div class="ax-table-scroll">
+        <table class="ax-table">
+          <caption class="ax-sr-only">Exemple de liste de contrats</caption>
+          <thead><tr>
+            <th scope="col">Référence</th><th scope="col">Client</th><th scope="col">Type</th><th scope="col">Échéance</th><th scope="col" class="is-num">Prime annuelle</th><th scope="col">Statut</th><th scope="col"><span class="ax-sr-only">Actions</span></th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="is-ref">CTR-0001</td>
+              <td><div class="ax-cell-person"><span class="ax-avatar ax-avatar--sm">LB</span><div><span class="ax-table__primary">Leïla Ben Salem</span><span class="ax-table__secondary">Client exemple</span></div></div></td>
+              <td>Automobile</td><td class="ax-num">12/03/2027</td><td class="is-num">1 240,00 DT</td><td><span class="ax-badge ax-badge--success">Actif</span></td>
+              <td class="is-actions"><button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" aria-label="Actions pour CTR-0001"><i class="bi bi-three-dots" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="is-ref">CTR-0002</td>
+              <td><div class="ax-cell-person"><span class="ax-avatar ax-avatar--sm ax-avatar--blue">MK</span><div><span class="ax-table__primary">Mehdi Karray</span><span class="ax-table__secondary">Client exemple</span></div></div></td>
+              <td>Habitation</td><td class="ax-num">30/11/2026</td><td class="is-num">680,00 DT</td><td><span class="ax-badge ax-badge--warning">À renouveler</span></td>
+              <td class="is-actions"><button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" aria-label="Actions pour CTR-0002"><i class="bi bi-three-dots" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="is-ref">CTR-0003</td>
+              <td><div class="ax-cell-person"><span class="ax-avatar ax-avatar--sm">SH</span><div><span class="ax-table__primary">Société Horizon</span><span class="ax-table__secondary">Client exemple</span></div></div></td>
+              <td>Flotte professionnelle</td><td class="ax-num">01/10/2026</td><td class="is-num">18 450,00 DT</td><td><span class="ax-badge ax-badge--danger">Expiré</span></td>
+              <td class="is-actions"><button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" aria-label="Actions pour CTR-0003"><i class="bi bi-three-dots" aria-hidden="true"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ax-table-footer"><span>3 lignes d'exemple</span><span class="ax-small">Pagination : branchée en phase 5</span></div>
+    </div>
+
+    <div class="ax-table-card mt-3">
+      <div class="ax-empty">
+        <span class="ax-empty__icon"><i class="bi bi-inbox" aria-hidden="true"></i></span>
+        <h3 class="ax-empty__title">Aucun contrat pour le moment</h3>
+        <p class="ax-empty__text">Les contrats créés apparaîtront ici. Ajoutez-en un pour suivre ses échéances et ses paiements.</p>
+        <button type="button" class="ax-btn ax-btn--primary ax-btn--sm"><i class="bi bi-plus-lg" aria-hidden="true"></i>Nouveau contrat</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Formulaires ================= -->
+  <section class="pv-section" aria-labelledby="s-forms">
+    <header><h2 class="ax-h3" id="s-forms">Formulaires</h2>
+      <p>Étiquettes toujours visibles, états de focus nets, erreurs qui expliquent comment corriger. Les classes <code>.is-invalid</code> et <code>.is-valid</code> se branchent directement sur les erreurs de formulaire Django.</p></header>
+    <div class="ax-card"><div class="ax-card__body">
+      <form class="row g-4" onsubmit="return false" novalidate>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-nom">Nom complet<span class="ax-required" aria-hidden="true">*</span></label>
+          <input id="pv-nom" class="ax-input" type="text" placeholder="Ex. Leïla Ben Salem" autocomplete="off">
+        </div>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-email">Adresse e-mail<span class="ax-optional">(facultatif)</span></label>
+          <div class="ax-input-group"><i class="bi bi-envelope ax-input-group__icon" aria-hidden="true"></i>
+            <input id="pv-email" class="ax-input" type="email" placeholder="nom@exemple.tn" autocomplete="off"></div>
+          <p class="ax-help">Utilisée pour envoyer les attestations.</p>
+        </div>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-type">Type d'assurance</label>
+          <select id="pv-type" class="ax-select"><option>Automobile</option><option>Habitation</option><option>Santé</option></select>
+        </div>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-ref">Référence du contrat</label>
+          <input id="pv-ref" class="ax-input is-invalid" type="text" value="CTR-" aria-invalid="true" aria-describedby="pv-ref-err">
+          <p class="ax-error" id="pv-ref-err"><i class="bi bi-exclamation-circle" aria-hidden="true"></i>La référence doit contenir 4 chiffres après « CTR- ».</p>
+        </div>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-pass">Mot de passe</label>
+          <div class="ax-input-group ax-input-group--trailing"><i class="bi bi-lock ax-input-group__icon" aria-hidden="true"></i>
+            <input id="pv-pass" class="ax-input" type="password" value="exemple1234">
+            <button type="button" class="ax-input-group__action" id="pv-pass-toggle" aria-label="Afficher le mot de passe" aria-controls="pv-pass"><i class="bi bi-eye" aria-hidden="true"></i></button></div>
+        </div>
+        <div class="col-12 col-md-6 ax-field">
+          <label class="ax-label" for="pv-off">Champ verrouillé</label>
+          <input id="pv-off" class="ax-input" type="text" value="Calculé automatiquement" disabled>
+        </div>
+        <div class="col-12 ax-field">
+          <label class="ax-label" for="pv-note">Note interne</label>
+          <textarea id="pv-note" class="ax-textarea" placeholder="Ajoutez un contexte utile à l'équipe"></textarea>
+        </div>
+        <div class="col-12"><div class="ax-row" style="gap:1.5rem">
+          <label class="ax-check"><input type="checkbox" checked> Envoyer une confirmation</label>
+          <label class="ax-check"><input type="radio" name="pv-r" checked> Paiement mensuel</label>
+          <label class="ax-check"><input type="radio" name="pv-r"> Paiement annuel</label>
+          <label class="ax-switch"><input type="checkbox" role="switch" checked> Rappels d'échéance</label>
+        </div></div>
+        <div class="col-12"><div class="ax-btn-group">
+          <button type="button" class="ax-btn ax-btn--primary">Enregistrer le client</button>
+          <button type="button" class="ax-btn ax-btn--ghost">Annuler</button></div></div>
+      </form>
+    </div></div>
+  </section>
+
+  <!-- ================= Alertes, menu, modale ================= -->
+  <section class="pv-section" aria-labelledby="s-feedback">
+    <header><h2 class="ax-h3" id="s-feedback">Alertes, menus et modales</h2>
+      <p>Les alertes fermables retirent seulement le message. Le menu et la modale s'appuient sur Bootstrap 5.3 (focus piégé, touche Échap) avec la peau Assurix.</p></header>
+    <div class="ax-stack">
+      <div class="ax-alert ax-alert--success" role="status"><i class="bi bi-check-circle ax-alert__icon" aria-hidden="true"></i>
+        <div class="ax-alert__body"><p class="ax-alert__title">Client enregistré</p><p>Affiché uniquement quand la base de données a confirmé l'enregistrement.</p></div>
+        <button type="button" class="ax-alert__close" aria-label="Fermer l'alerte" data-pv-dismiss><i class="bi bi-x-lg" aria-hidden="true"></i></button></div>
+      <div class="ax-alert ax-alert--warning" role="status"><i class="bi bi-exclamation-triangle ax-alert__icon" aria-hidden="true"></i>
+        <div class="ax-alert__body"><p class="ax-alert__title">3 contrats arrivent à échéance cette semaine</p><p>Contactez les clients concernés avant le 22/10/2026.</p></div>
+        <button type="button" class="ax-alert__close" aria-label="Fermer l'alerte" data-pv-dismiss><i class="bi bi-x-lg" aria-hidden="true"></i></button></div>
+      <div class="ax-alert ax-alert--danger" role="alert"><i class="bi bi-x-octagon ax-alert__icon" aria-hidden="true"></i>
+        <div class="ax-alert__body"><p class="ax-alert__title">Identifiants incorrects</p><p>Vérifiez votre nom d'utilisateur et votre mot de passe, puis réessayez.</p></div></div>
+      <div class="ax-alert" role="status"><i class="bi bi-info-circle ax-alert__icon" aria-hidden="true"></i>
+        <div class="ax-alert__body"><p class="ax-alert__title">Mise à jour planifiée</p><p>La plateforme sera indisponible dimanche de 02h00 à 02h30.</p></div></div>
+
+      <div class="ax-btn-group">
+        <div class="dropdown">
+          <button type="button" class="ax-btn" data-bs-toggle="dropdown" aria-expanded="false">Menu profil<i class="bi bi-chevron-down" aria-hidden="true"></i></button>
+          <ul class="dropdown-menu ax-menu">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person" aria-hidden="true"></i>Mon profil</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-gear" aria-hidden="true"></i>Préférences</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item is-danger" href="#"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Se déconnecter</a></li>
+          </ul>
+        </div>
+        <button type="button" class="ax-btn" data-bs-toggle="modal" data-bs-target="#pvModal">Ouvrir une modale</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Modal (Bootstrap 5.3 + skin Assurix) -->
+<div class="modal fade ax-modal" id="pvModal" tabindex="-1" aria-labelledby="pvModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title" id="pvModalTitle">Supprimer ce contrat ?</h2>
+        <button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" data-bs-dismiss="modal" aria-label="Fermer"><i class="bi bi-x-lg" aria-hidden="true"></i></button></div>
+      <div class="modal-body"><p class="mb-0 ax-text-2">Cette fenêtre est un exemple de composant. Aucune suppression réelle n'est effectuée.</p></div>
+      <div class="modal-footer"><button type="button" class="ax-btn ax-btn--ghost" data-bs-dismiss="modal">Garder le contrat</button>
+        <button type="button" class="ax-btn ax-btn--danger" data-bs-dismiss="modal">Supprimer le contrat</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+  /* Preview-only interactions (the real versions arrive in assurix-app.js, Phase 3) */
+  document.querySelectorAll('.ax-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chip.parentElement.querySelectorAll('.ax-chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+    });
+  });
+  document.querySelectorAll('.ax-segmented button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.parentElement.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+    });
+  });
+  document.querySelectorAll('[data-pv-dismiss]').forEach(function (btn) {
+    btn.addEventListener('click', function () { btn.closest('.ax-alert').remove(); });
+  });
+  var passBtn = document.getElementById('pv-pass-toggle');
+  passBtn.addEventListener('click', function () {
+    var input = document.getElementById('pv-pass');
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    passBtn.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    passBtn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+  });
+</script>
+</body>
+</html>

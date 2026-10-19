@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static assurix_tags %}
+
+{% block extra_js %}
+  {# Chart.js (v4, fourni dans static/vendor/chartjs) puis le script du tableau de bord #}
+  <script src="{% static 'vendor/chartjs/chart.umd.js' %}" defer></script>
+  <script src="{% static 'js/assurix-dashboard.js' %}" defer></script>
+{% endblock %}
+
+{% block page_header %}
+  {# Accueil personnalisé : le seul élément expressif de l'interface #}
+  <section class="ax-hero mb-4" aria-labelledby="welcomeTitle">
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <p class="ax-small mb-2" style="color:#8ea1c4">{% now "l j F Y" %}</p>
+        <h1 class="ax-h2 mb-2" id="welcomeTitle">Bonjour, {{ user|ax_first_name }}</h1>
+        <p class="ax-text-2 mb-4 ax-measure" style="font-size: var(--ax-text-md)">
+          {% if tasks %}Vous avez {{ tasks|length }} tâche{{ tasks|length|pluralize }} prioritaire{{ tasks|length|pluralize }} à traiter.
+          {% else %}Aucune tâche prioritaire pour le moment.{% endif %}
+        </p>
+        <div class="ax-btn-group">
+          {% if tasks %}<a class="ax-btn ax-btn--primary" href="#priorityTasks"><i class="bi bi-list-check" aria-hidden="true"></i>Voir les tâches</a>{% endif %}
+          <a class="ax-btn ax-btn--ghost" style="color:#cfd9ec" href="{% url 'demande_list' %}"><i class="bi bi-inbox" aria-hidden="true"></i>Consulter les demandes</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block content %}
+  {# Indicateurs clés #}
+  {% url 'client_list' as url_clients %}{% url 'contrat_list' as url_contrats %}{% url 'demande_list' as url_demandes %}{% url 'sinistre_list' as url_sinistres %}
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+      {% include "components/stat_card.html" with label="Clients" value=kpis.clients icon="bi-people" meta="Fiches enregistrées" href=url_clients only %}
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      {% include "components/stat_card.html" with label="Contrats actifs" value=kpis.contrats_actifs icon="bi-file-earmark-text" tone="blue" meta="Actifs et à renouveler" href=url_contrats only %}
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      {% include "components/stat_card.html" with label="Demandes en attente" value=kpis.demandes_en_attente icon="bi-hourglass-split" tone="warning" meta="À traiter" href=url_demandes only %}
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      {% include "components/stat_card.html" with label="Sinistres à traiter" value=kpis.sinistres_a_traiter icon="bi-exclamation-triangle" tone="danger" meta="Déclarés ou en expertise" href=url_sinistres only %}
+    </div>
+  </div>
+
+  {# Graphiques #}
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-xl-8">
+      <section class="ax-card h-100" aria-labelledby="chartContractsTitle">
+        <div class="ax-card__header">
+          <div><h2 class="ax-card__title" id="chartContractsTitle">Contrats créés</h2><p class="ax-card__subtitle">12 derniers mois</p></div>
+        </div>
+        <div class="ax-card__body">
+          <div class="ax-chart" data-ax-chart="contracts">
+            <canvas id="chartContracts" role="img" aria-label="Contrats créés sur les 12 derniers mois"></canvas>
+            <div class="ax-chart__state" data-ax-chart-state></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-6 col-xl-4">
+      <section class="ax-card h-100" aria-labelledby="chartClaimsTitle">
+        <div class="ax-card__header">
+          <div><h2 class="ax-card__title" id="chartClaimsTitle">Sinistres par statut</h2><p class="ax-card__subtitle">Répartition actuelle</p></div>
+        </div>
+        <div class="ax-card__body">
+          <div class="ax-chart ax-chart--sm" data-ax-chart="claims">
+            <canvas id="chartClaims" role="img" aria-label="Répartition des sinistres par statut"></canvas>
+            <div class="ax-chart__state" data-ax-chart-state></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-xl-7">
+      <section class="ax-card h-100" aria-labelledby="chartPaymentsTitle">
+        <div class="ax-card__header">
+          <div><h2 class="ax-card__title" id="chartPaymentsTitle">Aperçu des paiements</h2><p class="ax-card__subtitle">Encaissé et en attente, par mois</p></div>
+        </div>
+        <div class="ax-card__body">
+          <div class="ax-chart ax-chart--sm" data-ax-chart="payments">
+            <canvas id="chartPayments" role="img" aria-label="Paiements encaissés et en attente par mois"></canvas>
+            <div class="ax-chart__state" data-ax-chart-state></div>
+          </div>
+        </div>
+        {% if charts %}
+        <div class="ax-card__footer">
+          <div class="ax-row" style="gap: var(--ax-space-6)">
+            <span>Encaissé sur 12 mois : <strong class="ax-num">{{ charts.payments.received_total|ax_money }}</strong></span>
+            <span>En attente ce mois : <strong class="ax-num">{{ charts.payments.pending_total|ax_money }}</strong></span>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+    </div>
+
+    <div class="col-12 col-xl-5">
+      <section class="ax-card h-100" id="priorityTasks" aria-labelledby="tasksTitle">
+        <div class="ax-card__header"><h2 class="ax-card__title" id="tasksTitle">Tâches prioritaires</h2>
+          {% if tasks %}<span class="ax-count" aria-label="{{ tasks|length }} tâches">{{ tasks|length }}</span>{% endif %}</div>
+        {% if tasks %}
+        <div class="ax-card__body--flush">
+          {% for t in tasks %}
+          <a class="ax-task" href="{{ t.url_name|ax_url }}">
+            <span class="ax-task__body"><span class="ax-task__title">{{ t.title }}</span><span class="ax-task__detail">{{ t.detail }}</span></span>
+            <span class="ax-badge ax-badge--{{ t.tone }}">{{ t.due }}</span>
+            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </a>
+          {% endfor %}
+        </div>
+        {% else %}
+          {% include "components/empty_state.html" with icon="bi-check2-circle" title="Rien à traiter" text="Les tâches prioritaires (relances, échéances, sinistres) apparaîtront ici." %}
+        {% endif %}
+      </section>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-xl-7">
+      <section class="ax-card h-100" aria-labelledby="activityTitle">
+        <div class="ax-card__header"><h2 class="ax-card__title" id="activityTitle">Activité récente</h2></div>
+        <div class="ax-card__body">
+          {% if activity %}
+          <ol class="ax-timeline">
+            {% for a in activity %}
+            <li>
+              <span class="ax-timeline__icon{% if a.tone != 'info' %} ax-timeline__icon--{{ a.tone }}{% endif %}"><i class="bi {{ a.icon }}" aria-hidden="true"></i></span>
+              <span class="ax-timeline__text">{{ a.text }}<span class="ax-timeline__time">Il y a {{ a.when|timesince }}</span></span>
+            </li>
+            {% endfor %}
+          </ol>
+          {% else %}
+            {% include "components/empty_state.html" with icon="bi-clock-history" title="Aucune activité" text="Les créations de contrats, paiements reçus et sinistres déclarés s'afficheront ici." %}
+          {% endif %}
+        </div>
+      </section>
+    </div>
+
+    <div class="col-12 col-xl-5">
+      <section class="ax-card h-100" aria-labelledby="quickTitle">
+        <div class="ax-card__header"><h2 class="ax-card__title" id="quickTitle">Actions rapides</h2></div>
+        <div class="ax-card__body">
+          <div class="ax-quick">
+            <a class="ax-quick__item" href="{% url 'client_list' %}"><i class="bi bi-person-plus" aria-hidden="true"></i>Clients</a>
+            <a class="ax-quick__item" href="{% url 'demande_list' %}"><i class="bi bi-inbox" aria-hidden="true"></i>Demandes</a>
+            <a class="ax-quick__item" href="{% url 'contrat_list' %}"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i>Contrats</a>
+            <a class="ax-quick__item" href="{% url 'paiement_list' %}"><i class="bi bi-credit-card-2-front" aria-hidden="true"></i>Paiements</a>
+            <a class="ax-quick__item" href="{% url 'sinistre_list' %}"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i>Sinistres</a>
+            <a class="ax-quick__item" href="{% url 'expertise_list' %}"><i class="bi bi-clipboard2-check" aria-hidden="true"></i>Expertises</a>
+          </div>
+          <p class="ax-small ax-text-3 mt-3 mb-0">Chaque raccourci ouvre le module correspondant, où l'action de création sera disponible une fois le backend connecté.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  {{ charts|json_script:"axChartData" }}
+{% endblock %}

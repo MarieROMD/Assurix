@@ -1,0 +1,47 @@
+{% load static assurix_tags %}
+{% ax_nav as nav_sections %}
+<aside class="ax-sidebar" id="axSidebar" aria-label="Navigation principale">
+  <div class="ax-sidebar__brand">
+    <a class="ax-sidebar__logo" href="{% url 'dashboard' %}" aria-label="Assurix, retour au tableau de bord">
+      <img class="ax-logo-full" src="{% static 'img/assurix-logo-light.svg' %}" alt="" width="148" height="40">
+      <img class="ax-logo-mark" src="{% static 'img/assurix-mark-light.svg' %}" alt="" width="40" height="40">
+    </a>
+    <button type="button" class="ax-icon-btn ax-sidebar__close" data-ax-sidebar-close aria-label="Fermer le menu">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <nav class="ax-sidebar__nav" aria-label="Modules">
+    {% for section in nav_sections %}
+    <div class="ax-nav-section">
+      <p class="ax-nav-section__title" id="axNavSection{{ forloop.counter }}">{{ section.title }}</p>
+      <ul class="ax-nav-list" aria-labelledby="axNavSection{{ forloop.counter }}">
+        {% for item in section.items %}
+        <li>
+          <a class="ax-nav-link{% if item.active %} is-active{% endif %}" href="{{ item.url }}"
+             data-ax-label="{{ item.label }}"{% if item.active %} aria-current="page"{% endif %}>
+            <i class="bi {{ item.icon }}" aria-hidden="true"></i>
+            <span class="ax-nav-link__label">{{ item.label }}</span>
+            {% if item.count %}<span class="ax-nav-link__count">{{ item.count }}<span class="ax-sr-only"> non lu{{ item.count|pluralize }}</span></span>{% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </nav>
+
+  <div class="ax-sidebar__foot">
+    <div class="ax-profile">
+      <span class="ax-avatar" aria-hidden="true">{{ user|ax_initials }}</span>
+      <span class="ax-profile__text">
+        <span class="ax-profile__name">{{ user|ax_name }}</span>
+        <span class="ax-profile__role">{{ user|ax_role }}</span>
+      </span>
+      <form class="ax-profile__logout" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" aria-label="Se déconnecter" title="Se déconnecter"><i class="bi bi-box-arrow-right" aria-hidden="true"></i></button>
+      </form>
+    </div>
+  </div>
+</aside>

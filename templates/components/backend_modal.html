@@ -1,0 +1,22 @@
+{# Fenêtre générique : fonctionnalité dont le backend n'existe pas encore. Aucun succès simulé. #}
+<div class="modal fade ax-modal" id="axUnavailableModal" tabindex="-1" aria-labelledby="axUnavailableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="axUnavailableTitle">Action indisponible</h2>
+        <button type="button" class="ax-btn ax-btn--ghost ax-btn--icon ax-btn--sm" data-bs-dismiss="modal" aria-label="Fermer"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="ax-alert ax-alert--warning" role="note" style="margin-bottom: var(--ax-space-4)">
+          <i class="bi bi-tools ax-alert__icon" aria-hidden="true"></i>
+          <div class="ax-alert__body">
+            <p class="ax-alert__title">Pas encore branchée au backend</p>
+            <p id="axUnavailableDetail">Cette fonctionnalité sera disponible lorsque le modèle de données correspondant existera.</p>
+          </div>
+        </div>
+        <p class="mb-0 ax-text-2 ax-small">Aucune donnée n'a été créée, modifiée ou supprimée.</p>
+      </div>
+      <div class="modal-footer"><button type="button" class="ax-btn ax-btn--primary" data-bs-dismiss="modal">Compris</button></div>
+    </div>
+  </div>
+</div>

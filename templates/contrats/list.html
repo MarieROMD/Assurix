@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load assurix_tags %}
+
+{% block page_actions %}
+  <button type="button" class="ax-btn ax-btn--primary" data-bs-toggle="modal" data-bs-target="#axUnavailableModal"
+          data-ax-unavailable="Nouveau contrat" data-ax-unavailable-detail="La création de contrats nécessite le modèle Contrat, qui n'existe pas encore dans le backend.">
+    <i class="bi bi-plus-lg" aria-hidden="true"></i>Nouveau contrat
+  </button>
+{% endblock %}
+
+{% block content %}
+  {% if summary %}
+  <div class="row g-3 mb-4">
+    {% for s in summary %}<div class="col-6 col-xl-3">{% include "components/stat_card.html" with label=s.label value=s.value icon=s.icon tone=s.tone compact=True only %}</div>{% endfor %}
+  </div>
+  {% endif %}
+
+  <section class="ax-table-card" data-ax-table aria-label="Liste des contrats">
+    <div class="ax-table-toolbar">
+      {% include "components/table_filters.html" with search_id="contratSearch" search_label="Rechercher un contrat, un client ou un type" filters=filters %}
+    </div>
+    {% if rows %}
+    <div class="ax-table-scroll">
+      <table class="ax-table">
+        <caption class="ax-sr-only">Liste des contrats</caption>
+        <thead><tr>
+          <th scope="col">Référence</th><th scope="col">Client</th><th scope="col">Type d'assurance</th>
+          <th scope="col">Début</th><th scope="col">Échéance</th><th scope="col" class="is-num">Prime annuelle</th><th scope="col">Statut</th>
+        </tr></thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-ax-row data-status="{{ r.status }}">
+            <td class="is-ref">{{ r.ref }}</td>
+            <td><span class="ax-cell-person"><span class="ax-avatar ax-avatar--sm" aria-hidden="true">{{ r.client|ax_initials }}</span><span class="ax-table__primary">{{ r.client }}</span></span></td>
+            <td>{{ r.kind }}</td>
+            <td class="ax-num">{{ r.start|date:"d/m/Y" }}</td>
+            <td class="ax-num">{{ r.end|date:"d/m/Y" }}
+              {% if r.status == "Actif" or r.status == "À renouveler" or r.status == "Expiré" %}
+                <span class="ax-table__secondary">{% if r.renewal_days < 0 %}Échu depuis {{ r.renewal_days|cut:"-" }} j{% else %}Dans {{ r.renewal_days }} j{% endif %}</span>
+              {% endif %}
+            </td>
+            <td class="is-num">{{ r.premium|ax_money }}</td>
+            <td>{% include "components/status_badge.html" with status=r.status %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ax-empty ax-no-results" data-ax-no-results hidden>
+      <span class="ax-empty__icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+      <h3 class="ax-empty__title">Aucun contrat ne correspond</h3>
+      <p class="ax-empty__text">Modifiez votre recherche ou retirez le filtre de statut.</p>
+    </div>
+    <div class="ax-table-footer"><span>Pagination à brancher avec les vraies données</span></div>
+    {% else %}
+      {% include "components/empty_state.html" with icon="bi-file-earmark-text" title="Aucun contrat pour le moment" text="Les contrats créés apparaîtront ici avec leurs échéances et leurs renouvellements." action_label="Nouveau contrat" action_detail="Le modèle Contrat n'existe pas encore dans le backend." %}
+    {% endif %}
+  </section>
+{% endblock %}
